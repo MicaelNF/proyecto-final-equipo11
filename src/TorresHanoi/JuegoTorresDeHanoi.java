@@ -8,8 +8,8 @@
  * @date 26-11-2024
  * @version 1.0
  */
-package TorresHanoi;
-import TorresHanoi.TorresHanoiExcepciones.*;
+package src.TorresHanoi;
+import src.TorresHanoi.TorresHanoiExcepciones.*;
 
 public class JuegoTorresDeHanoi extends Torre {
     private Torre[] juegoTorreDeHanoi = new Torre[3];

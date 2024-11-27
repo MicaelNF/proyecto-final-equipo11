@@ -8,7 +8,7 @@
  * @date 26-11-2024
  * @version 1.0
  */
-package TorresHanoi.TorresHanoiExcepciones;
+package src.TorresHanoi.TorresHanoiExcepciones;
 
 public class DiscoMasGrandeExcepcion extends Exception {
 

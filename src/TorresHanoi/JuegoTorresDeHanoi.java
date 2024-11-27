@@ -6,7 +6,7 @@
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
  * @date 26-11-2024
- * @version 1.0
+ * @version 1.1
  */
 package src.TorresHanoi;
 import src.TorresHanoi.TorresHanoiExcepciones.*;
@@ -17,7 +17,7 @@ public class JuegoTorresDeHanoi extends Torre {
 
     /**
      * Constructor por omisión de la clase {@code JuegoTorresDeHanoi}.
-     * Inicializa las tres torres del juego y llena la primera torre con discos ordenados.
+     * Inicializa las tres torres del juego y llena la primera torre con 6 discos ordenados.
      */
     public JuegoTorresDeHanoi() {
         for (int i = 0; i < juegoTorreDeHanoi.length; i++) {
@@ -25,6 +25,19 @@ public class JuegoTorresDeHanoi extends Torre {
         }
         // Se llena la primera torre con discos en orden creciente.
         juegoTorreDeHanoi[0].llenarTorre(); 
+    }
+
+    /**
+     * Constructor por parámetros de la clase {@code JuegoTorresDeHanoi}.
+     * Inicializa las tres torres del juego y llena la primera torre con la cantidad de discos
+     * que se le paso como parámetro.
+     */
+    public JuegoTorresDeHanoi(int numeroDeDiscos) throws Exception {
+            for (int i = 0; i < juegoTorreDeHanoi.length; i++) {
+                juegoTorreDeHanoi[i] = new Torre(numeroDeDiscos);    
+            }
+            // Se llena la primera torre con discos en orden creciente.
+            juegoTorreDeHanoi[0].llenarTorre(); 
     }
 
     /**
@@ -57,6 +70,14 @@ public class JuegoTorresDeHanoi extends Torre {
         jugadas++;
     }
 
+    public boolean esGanador() {
+        return juegoTorreDeHanoi[2].esGanador();
+    }
+
+    public int obtenerNumeroDeJugadas() {
+        return jugadas;
+    }
+
     /**
      * Genera una representación visual del estado actual del juego.
      * Muestra los discos en las tres torres en formato ASCII.
@@ -68,11 +89,11 @@ public class JuegoTorresDeHanoi extends Torre {
         String cadena = "";
         String espacioBlanco = "      ";
         for (int i = 0; i < juegoTorreDeHanoi[0].length(); i++) {
-            cadena += (i + 1) + ")" + representacionDeDiscos(juegoTorreDeHanoi[0].obtenerDisco(i)) + espacioBlanco +
-                      (i + 1) + ")" + representacionDeDiscos(juegoTorreDeHanoi[1].obtenerDisco(i)) + espacioBlanco +
-                      (i + 1) + ")" + representacionDeDiscos(juegoTorreDeHanoi[2].obtenerDisco(i)) + "\n";
+            cadena += representacionDeDiscos(juegoTorreDeHanoi[0].obtenerDisco(i)) + espacioBlanco +
+                      representacionDeDiscos(juegoTorreDeHanoi[1].obtenerDisco(i)) + espacioBlanco +
+                      representacionDeDiscos(juegoTorreDeHanoi[2].obtenerDisco(i)) + "\n";
             if (i == juegoTorreDeHanoi[0].length() - 1) {
-                cadena += "      Torre 1    " + espacioBlanco + "      Torre 2    " + espacioBlanco + "      Torre 3    ";
+                cadena += "    Torre 1    " + espacioBlanco + "    Torre 2    " + espacioBlanco + "    Torre 3    ";
             }
         }
         return cadena;

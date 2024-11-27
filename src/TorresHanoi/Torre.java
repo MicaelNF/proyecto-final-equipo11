@@ -185,6 +185,10 @@ public class Torre {
         torre[posición] = disco;
     }
 
+    public boolean esGanador() {
+        return (posicionesSinNada() == 0);
+    }
+
     /**
      * Genera una representación visual de un disco (ASCII).
      * 

@@ -1,7 +1,5 @@
 package src.Usuarios;
 import java.io.*;
-import java.io.Serializable;
-
 import src.Usuarios.UsuariosExcepciones.*;
 
 public class User implements Serializable {
@@ -35,6 +33,10 @@ public class User implements Serializable {
         saldo = saldo - saldoARetirar;
     }
 
+    public void aumentarSaldo(int saldoASumar) {
+        saldo = saldo + saldoASumar;
+    }
+
     // Metodo que regresa el ID.
     public String obtenerId() {
         return id;
@@ -62,6 +64,12 @@ public class User implements Serializable {
         ruta += id + ".txt";
         
         return ruta;
+    }
+
+    public void guardarUsuario() throws Exception {
+        ObjectOutputStream grabador = new ObjectOutputStream(new FileOutputStream(this.obtenerRuta()));
+        grabador.writeObject(this);
+        grabador.close();
     }
 
     @Override

@@ -266,14 +266,7 @@ public class Main {
                             ganador = false;
                         }
 
-                        JuegoTorresDeHanoi juegoTorreDeHanoi = null;
-                        try {
-                            juegoTorreDeHanoi = new JuegoTorresDeHanoi(3);                            
-                        } catch (Exception e) {
-                            System.out.println(e);
-                        }
-
-
+                        JuegoTorresDeHanoi juegoTorreDeHanoi = new JuegoTorresDeHanoi();                            
                         while(ganador) {
                             try {
                                 System.out.println("\n" + juegoTorreDeHanoi);

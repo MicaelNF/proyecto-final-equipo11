@@ -15,6 +15,7 @@ import src.Verificador.*;
 import src.Verificador.VerificadorExcepciones.*;
 import src.Usuarios.*;
 import src.TorresHanoi.*;
+import src.Salvado.*;
 public class Main {
 
     /**
@@ -312,7 +313,43 @@ public class Main {
 
                 switch (opcion) {
                     case 1:
-                    System.out.println("Implementar el código que falta");
+                        try {
+                            usuarioEscogido.retirarSaldo(10);
+                        } catch (Exception e) {
+                            System.out.println("Lo siento no tienes saldo suficiente.");
+                        }
+                        
+                        JugarSalvado nuevoJuego = new JugarSalvado();
+                        int puntosGanados = 0;
+                        System.out.println("INSTRUCCIONES: ");
+                        System.out.println("En un circulo formado por sillas hay 100 personas.");
+                        System.out.println("Dependiendo el número de saltos que de, se irán eliminando hasta que quede un ganador.");
+                        System.out.println("Tu tarea es adivinar que posición quedará hasta el final.");
+                        System.out.println("----------------------------------------------------------------------------------");
+                        try {
+                            System.out.println("El número de saltos de esta ronda es: " + nuevoJuego.obtenerSaltos());
+                            System.out.println("Ingresa el número de jugador que crees que sobrevivirá hasta el final, solo números entre 1 y 100: ");
+                            int prediccion = inTexto.nextInt();
+                            int sobrevivio = nuevoJuego.jugar();
+                            if (prediccion== sobrevivio) {
+                                System.out.println("¡Has Adivinado!. El jugador que sobrevivio hasta el final fue: " + sobrevivio);
+                                puntosGanados = 12;
+                            }
+                            else{
+                                System.out.println("¡Has fallado!. El jugador que sobrevivio al final fue: " + sobrevivio);
+                                puntosGanados = 2;
+                            }
+                            usuarioEscogido.sumarPuntos(puntosGanados);
+                            System.out.println("\n¡¡HAS GANADO " + puntosGanados + " PUNTOS!!, se mostrara tu nueva información: ");
+
+                        } catch (EstadoInvalidoDelJuegoExcepcion e) {
+                            System.out.println(e);
+                        } catch (IndexOutOfBoundsException e){
+                            System.out.println("El indice está fuera del rango válido");
+                        } catch (Exception e){
+                            System.out.println("Solo puedes escribir números.");
+                            inTexto.nextLine();
+                        }
                         break;
                     
                     case 2:

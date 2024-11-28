@@ -1,12 +1,12 @@
 /**
  * Clase {@code Torre} que representa una torre en el juego de las Torres de Hanoi.
  * Esta clase sirve para la asignar discos, verificación de posiciones disponibles, 
- * y generación de una representación en tipo String (ASCII).
+ * y generación de una representación en tipo String (ASCII) de cada disco.
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 26-11-2024
- * @version 1.0
+ * @date 27-11-2024
+ * @version 1.1
  */
 package src.TorresHanoi;
 import src.TorresHanoi.TorresHanoiExcepciones.*;
@@ -185,6 +185,12 @@ public class Torre {
         torre[posición] = disco;
     }
 
+
+    /**
+     * Verifica si la torre está llena, es decir, si todas sus posiciones están ocupadas por discos.
+     * 
+     * @return {@code true} si no hay posiciones vacías en la torre, {@code false} en caso contrario.
+     */
     public boolean esGanador() {
         return (posicionesSinNada() == 0);
     }

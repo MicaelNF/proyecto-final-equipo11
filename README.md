@@ -17,8 +17,19 @@ El objetivo de esta práctica es que el alumno ejercite la de aplicación y uso 
 
 * Correo: seyin06rv@ciencias.unam.mx
   
-## Instrucciones
-Aca van las instrucciones
+## Instrucciones de uso (Solo funciona de momento para el día 2, ya que es únicamente un avance)
+1. **Compilar el programa:**
+
+```bash
+javac Main.java
+```
+
+2. **Ejecutar el programa:**
+
+```bash
+java Main
+```
+3. **Seguir las instrucciones del programa.**
 
 ## Comentarios
 1. Puedes utilizar todo lo revisado hasta el momento.

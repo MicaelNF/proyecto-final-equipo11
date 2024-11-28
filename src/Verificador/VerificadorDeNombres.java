@@ -61,12 +61,12 @@ public class VerificadorDeNombres {
         }
 
         // Verifica si la longitud es válida.
-        if (cadenaVerificada.length() < 5) {
-            throw new LargoDelNombreException("Tu nombre debe de tener al menos 5 caracteres válidos.");
+        if (cadenaVerificada.length() < 3) {
+            throw new LargoDelNombreException("Tu nombre debe de tener al menos 3 caracteres válidos.");
         }
 
-        if (cadenaVerificada.length() > 10) {
-            throw new LargoDelNombreException("Tu nombre debe de tener como máximo 10 caracteres válidos.");
+        if (cadenaVerificada.length() > 15) {
+            throw new LargoDelNombreException("Tu nombre debe de tener como máximo 15 caracteres válidos.");
         }
 
         // Asigna el nombre validado.

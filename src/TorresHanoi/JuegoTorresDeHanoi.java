@@ -1,12 +1,13 @@
 /**
  * Clase {@code JuegoTorresDeHanoi} que representa el juego completo de las Torres de Hanoi.
- * Esta clase extiende la funcionalidad de la clase {@code Torre} y gestiona las tres torres del juego.
- * Incluye métodos para inicializar el juego, mover discos entre torres, y generar una representación visual del estado actual.
+ * Esta clase es heredada de la clase {@code Torre} y gestiona tres torres del juego.
+ * Incluye métodos para inicializar el juego, mover discos entre torres, y generar una representación visual 
+ * del estado actual del juego.
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 26-11-2024
- * @version 1.1
+ * @date 27-11-2024
+ * @version 1.2
  */
 package src.TorresHanoi;
 import src.TorresHanoi.TorresHanoiExcepciones.*;
@@ -29,8 +30,11 @@ public class JuegoTorresDeHanoi extends Torre {
 
     /**
      * Constructor por parámetros de la clase {@code JuegoTorresDeHanoi}.
-     * Inicializa las tres torres del juego y llena la primera torre con la cantidad de discos
-     * que se le paso como parámetro.
+     * Inicializa las tres torres del juego y llena la primera torre con la cantidad de discos 
+     * especificada por el parámetro {@code numeroDeDiscos}.
+     * 
+     * @param numeroDeDiscos la cantidad de discos iniciales en la primera torre.
+     * @throws Exception si ocurre un error durante la inicialización de las torres.
      */
     public JuegoTorresDeHanoi(int numeroDeDiscos) throws Exception {
             for (int i = 0; i < juegoTorreDeHanoi.length; i++) {
@@ -70,10 +74,21 @@ public class JuegoTorresDeHanoi extends Torre {
         jugadas++;
     }
 
+    /**
+     * Verifica si el jugador ha ganado el juego.
+     * La condición de victoria se cumple cuando todos los discos están en la tercera torre.
+     * 
+     * @return {@code true} si el jugador ha ganado; {@code false} en caso contrario.
+     */
     public boolean esGanador() {
         return juegoTorreDeHanoi[2].esGanador();
     }
 
+    /**
+     * Devuelve el número de jugadas hechas.
+     * 
+     * @return el número de jugadas que se han hecho.
+     */
     public int obtenerNumeroDeJugadas() {
         return jugadas;
     }
@@ -97,53 +112,6 @@ public class JuegoTorresDeHanoi extends Torre {
             }
         }
         return cadena;
-    }
-
-    /**
-     * Método principal para ejecutar una prueba del juego de Torres de Hanoi. Aun no se solicitan creditos ni el día
-     * ya que el encargado de realizar dichas verificaciones sera otra clase.
-     * 
-     * @param args no se utilizo la línea de comandos.
-     */
-    public static void main(String[] args) {
-        JuegoTorresDeHanoi prueba = new JuegoTorresDeHanoi();
-        String guiones = "--------------------------------------------------------------------------------";
-        try {
-            System.out.println(prueba);
-            System.out.println(guiones);
-            
-            prueba.moverPieza(0, 2);
-            System.out.println(prueba);
-            System.out.println(guiones);
-
-            prueba.moverPieza(0, 1);
-            System.out.println(prueba);
-            System.out.println(guiones);
-
-
-            prueba.moverPieza(2, 1);
-            System.out.println(prueba);
-            System.out.println(guiones);
-
-            prueba.moverPieza(0, 2);
-            System.out.println(prueba);
-            System.out.println(guiones);
-
-            prueba.moverPieza(1, 2);
-            System.out.println(prueba);
-            System.out.println(guiones);
-
-            prueba.moverPieza(1, 0);
-            System.out.println(prueba);
-            System.out.println(guiones);
-
-            prueba.moverPieza(0, 1);
-            System.out.println(prueba);
-            System.out.println(guiones);
-
-        } catch (Exception e) {
-            System.err.println(e);
-        }
     }
 }
 

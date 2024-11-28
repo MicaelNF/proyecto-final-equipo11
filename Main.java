@@ -7,8 +7,6 @@
  * @date 27-11-2024
  * @version 1.2
  */
-package src;
-
 import java.io.*;
 import java.util.Scanner;
 import src.Verificador.*;

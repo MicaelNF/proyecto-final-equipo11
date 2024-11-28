@@ -2,3 +2,5 @@
 *.java~
 *.class
 *.gitignore~
+*.txt
+*.txt~

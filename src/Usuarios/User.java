@@ -6,14 +6,15 @@
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
  * @date 27-11-2024
- * @version 1.1
+ * @version 1.3
  */
 package src.Usuarios;
 
 import java.io.*;
+import java.util.Comparator;
 import src.Usuarios.UsuariosExcepciones.*;
 
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User>, Comparator<User>{
 
     private int saldo;
     private String id;
@@ -148,6 +149,31 @@ public class User implements Serializable {
         // Se guarda el archivo.
         grabador.writeObject(this);
         grabador.close();
+    }
+
+    /**
+     * Compara dos {@code User} de acuerdo a su puntuación.
+     * Devuelve un valor negativo si el usuario que se esta comparando es menor, positivo si la puntuación es mayor 
+     * y 0 si ambos son iguales respecto a la puntuación.
+     * 
+     * @param usuarioComparado el primer usuario a comparar.
+     * @param usuarioAComparar el segundo usuario a comparar.
+     * @return un valor negativo si es menor, positivo es mayor y 0 si su puntuación es la misma.
+     */
+    @Override
+    public int compare(User usuarioComparado, User usuarioAComparar) {
+        return Integer.compare(usuarioComparado.obtenerPuntos(), usuarioAComparar.obtenerPuntos());
+    }
+
+    /**
+     * Compara al usuario con el que se manda a llamr al método con otro usuario de acuerdo a su puntuación.
+     * 
+     * @param usuarioAComparar el usuario con el que se va a comparar.
+     * @return un valor negativo si es menor, positivo es mayor y 0 si su puntuación es la misma.
+     */
+    @Override
+    public int compareTo(User usuarioAComparar) {
+        return compare(this, usuarioAComparar);
     }
 
     /**

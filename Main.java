@@ -4,8 +4,8 @@
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 27-11-2024
- * @version 1.2
+ * @date 02-12-2024
+ * @version 1.3
  */
 import java.io.*;
 import java.util.Scanner;
@@ -15,6 +15,7 @@ import src.Usuarios.*;
 import src.TorresHanoi.*;
 import src.Salvado.*;
 import src.Salvado.SalvadoExcepciones.*;
+import src.Ordenamiento.*;
 public class Main {
 
     /**
@@ -109,7 +110,7 @@ public class Main {
                     nombre = inTexto.nextLine();
                     nombreVerificado = new VerificadorDeNombres(nombre);
                     temporalNombreUsuario = false;    
-                } catch (LargoDelNombreException e) {
+                } catch (LargoDelNombreExcepcion e) {
                     System.out.println("\n" + e);
                 } catch (Exception e) {
                     System.out.println("\n" + e);
@@ -361,7 +362,7 @@ public class Main {
             while(bucleSecundario) {
 
                 // Se le pregunta al usuario que juego quiere jugar
-                System.out.println("¿Que juego deseas jugar?");
+                System.out.println("¿Que es lo que deseas jugar o hacer?");
                 System.out.println("(1) Salvado          (2) Torres de Hanoi           (3) Ver tu posición en el top           (0) Salir del programa");
                 
                 // Bucle que asegura y verifica que la opción sea válida.
@@ -504,7 +505,7 @@ public class Main {
                                             temporalOpciones = false;
 
                                         // Caso de que el usuario escoga salir del juego.                                        
-                                        } else if(torreDePartida == 9) {
+                                        } else if(torreDeDestino == 9) {
                                             temporalOpciones = false;
                                             ganador = false;
 
@@ -581,12 +582,32 @@ public class Main {
                     // Caso de que quieran ver el top de jugadores y su posición    
                     case 3:
 
-                    // Se mostrara el podio de los tres primeros jugadores.
+                    // Se inicializan las variables que se van a usar para evitar problemas.
+                    int i = 0;
+                    OrdenamientoDeUsuarios listaOrdenada = null;
+                    try {
+                        // Se ordena la lista de usuarios.
+                        listaOrdenada = new OrdenamientoDeUsuarios(listaDePartidas);
+                        listaOrdenada.ordenarLista();
 
-                    // Se muestra la posicion y datos del jugador actual.
+                        // Se imprimen los tres primeros usuarios.
+                        System.out.println("\n------Podio de los tres primeros lugares------");
+                        for (i = 0; i < 3; i++) {
+                            System.out.println("\nTop " + (i + 1) + ":");
+                            System.out.println(listaOrdenada.obtenerUsuarioEnPosicion(i));
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Aún no hay suficientes usuarios existentes para un top " + i);
+                    }
 
-                    // Aqui se usara el método que muestra la posición.
-                    System.out.println(usuarioEscogido);
+                    // Se imprime en que posición se encuentra la sesión actual.
+                    try {
+                        System.out.println("\n------Posición de la sesión actual------");
+                        System.out.println("Top " + (listaOrdenada.obtenerPosicionDeUsuario(usuarioEscogido.obtenerId()) + 1) + ":");
+                        System.out.println(usuarioEscogido); 
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                         break;
                 
                     // Caso de que quieran salir del programa    

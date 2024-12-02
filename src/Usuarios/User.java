@@ -5,8 +5,8 @@
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 27-11-2024
- * @version 1.3
+ * @date 02-12-2024
+ * @version 1.4
  */
 package src.Usuarios;
 
@@ -149,6 +149,47 @@ public class User implements Serializable, Comparable<User>, Comparator<User>{
         // Se guarda el archivo.
         grabador.writeObject(this);
         grabador.close();
+    }
+
+    /**
+     * Lee un usuario desde un archivo.
+     * El archivo debe contener un objeto serializado de tipo {@code User}.
+     * 
+     * @param rutaDelUsuario El archivo desde el cual se leerá el usuario.
+     * @return El usuario leído desde el archivo.
+     * @throws Exception si ocurre un error al leer el archivo.
+     */
+    public static User leerUsuario(File rutaDelUsuario) throws Exception {
+        ObjectInputStream lector = new ObjectInputStream(new FileInputStream(rutaDelUsuario));
+        User usuarioEscogido = (User) lector.readObject();
+        lector.close();
+        return usuarioEscogido;
+    }
+
+    /**
+     * Genera la ruta completa de un archivo a partir del nombre del archivo proporcionado.
+     * Si el nombre no contiene una extensión, se añade ".txt" automáticamente.
+     * 
+     * @param nombreDelArchivo El nombre del archivo para el cual se generará la ruta.
+     * @return Un objeto {@code File} que representa la ruta del archivo.
+     */
+    public static File generarRuta(String nombreDelArchivo) {
+        String ruta = "";
+        // Caso de que el archivo no tenga la terminación .txt .
+        if (nombreDelArchivo.indexOf('.') == -1) {
+            ruta = "src/Partidas/";
+
+            // Se le agrega la terminación.
+            ruta += nombreDelArchivo + ".txt";
+
+        // Caso de que el archivo ya tenga la terminación .txt .
+        } else {
+            ruta = "src/Partidas/";
+            ruta += nombreDelArchivo;
+        }
+
+        // Se regresa la ruta del archivo.
+        return new File(ruta);
     }
 
     /**

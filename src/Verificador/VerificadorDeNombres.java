@@ -1,99 +1,90 @@
 /**
- * Clase {@code VerificadorDeNombres} que permite verificar y validar nombres según 
- * ciertos criterios de longitud y caracteres permitidos. El nombre se transforma a mayúsculas 
- * y se eliminan los caracteres no deseados.
- * 
- * Requisitos del nombre:
- * - Debe contener entre 5 y 10 caracteres válidos.
+ * Clase {@code VerificadorDeNombres} que permite verificar y validar nombres 
+ * según ciertos criterios de longitud y caracteres permitidos. El nombre ingresado 
+ * se transforma a mayúsculas y se filtran los caracteres que si estan permitidos.
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 27-11-2024
- * @version 1.1
+ * @date 02-12-2024
+ * @version 2.0
  */
 package src.Verificador;
-import src.Verificador.VerificadorExcepciones.*;
+
+import java.util.Scanner;
+import src.Verificador.VerificadorExcepciones.LargoDelNombreExcepcion;
 
 public class VerificadorDeNombres {
 
-    private String nombreVerificado;
+    private static final String CARACTERES_DISPONIBLES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     /**
-     * Constructor de la clase {@code VerificadorDeNombres}.
-     * Verifica y valida el nombre proporcionado. El nombre se convierte a mayúsculas y se eliminan 
-     * los carácteres no válidos.
+     * Método estático que solicita al usuario un nombre por consola y lo verifica.
+     * Si el nombre ingresado no cumple con los requisitos de longitud, se solicita nuevamente
+     * hasta que se introduzca un nombre válido.
      * 
-     * @param nombre el nombre que se desea verificar.
-     * @throws IllegalArgumentException si el nombre proporcionado es nulo.
-     * @throws LargoDelNombreExcepcion si el nombre no cumple con los requisitos de longitud.
+     * @return El nombre verificado y filtrado que cumple con los requisitos de longitud y caracteres permitidos.
      */
-    public VerificadorDeNombres(String nombre) throws Exception {
-        
-        // Caso de que el nombre sea un objeto nulo.
-        if (nombre == null) {
-            throw new IllegalArgumentException("No puedes pasar como parámetro un objeto nulo.");
-        }
+    @SuppressWarnings("resource") // Se añadió aunque realmente no es necesario.
+    public static String verificarNombre() {
+        Scanner in = new Scanner(System.in);
+        String nombre;
+        String nombreVerificado = null;
+        boolean nombreInvalido = true;
 
-        // Se convierte el nombre a mayúsculas.
-        nombreVerificado = nombre.toUpperCase();
-
-        // Se convierte el nombre en uno válido.
-        this.verificarNombre();
-    }
-
-    /**
-     * Método privado que verifica la validez del nombre. Filtra los caracteres no alfabéticos
-     * y valida la longitud resultante. Si el nombre tiene menos de 5 caracteres o más de 10,
-     * se lanza una excepción.
-     * 
-     * @throws LargoDelNombreExcepcion si la longitud del nombre verificado es menor a 5 
-     *         o mayor a 10 caracteres alfabéticos válidos.
-     */
-    private void verificarNombre() throws LargoDelNombreExcepcion {
-        String cadenaVerificada = "";
-        String caracteresDisponibles = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-        // Filtra los caracteres permitidos.
-        for (int i = 0; i < nombreVerificado.length(); i++) {
-            if (caracteresDisponibles.indexOf(nombreVerificado.charAt(i)) != -1) {
-                cadenaVerificada += nombreVerificado.charAt(i);
+        // Bucle que asegura y verifica que el nombre de usuario sea válido.
+        while (nombreInvalido) {
+            try {
+                System.out.print("Ingrese un nombre: ");
+                nombre = in.nextLine();
+                nombreVerificado = VerificadorDeNombres.verificarNombre(nombre);
+                nombreInvalido = false;
+            } catch (LargoDelNombreExcepcion e) {
+                System.out.println("\nError: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("\nError inesperado: " + e.getMessage());
             }
         }
-
-        // Verifica si la longitud es válida.
-        if (cadenaVerificada.length() < 3) {
-            throw new LargoDelNombreExcepcion("Tu nombre debe de tener al menos 3 caracteres válidos.");
-        }
-
-        if (cadenaVerificada.length() > 15) {
-            throw new LargoDelNombreExcepcion("Tu nombre debe de tener como máximo 15 caracteres válidos.");
-        }
-
-        // Asigna el nombre validado.
-        nombreVerificado = cadenaVerificada;
-    }
-
-    /**
-     * Método que devuelve la representación en cadena del nombre validado.
-     * 
-     * @return el nombre validado en formato de cadena.
-     */
-    @Override
-    public String toString() {
+        
+        // Se regresa el nombre verificado.
         return nombreVerificado;
     }
 
     /**
-     * Método principal que ejecuta una prueba del verificador de nombres.
+     * Método auxiliar que verifica la validez de un nombre ingresado. Convierte el nombre a mayúsculas,
+     * filtra los caracteres no alfabéticos y valida la longitud resultante.
      * 
-     * @param args los argumentos de línea de comandos.
+     * @param nombre El nombre ingresado por el usuario.
+     * @return El nombre ya válido.
+     * @throws LargoDelNombreExcepcion si la longitud del nombre verificado es menor a 3 
+     * o mayor a 15 caracteres válidos.
      */
-    public static void main(String[] args) {
-        try {
-            VerificadorDeNombres nombre = new VerificadorDeNombres("Micael1029");
-            System.out.println(nombre);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+    private static String verificarNombre(String nombre) throws LargoDelNombreExcepcion {
+
+        // Se crea un StringBuilder para almacenar el nombre filtrado.
+        StringBuilder cadenaVerificada = new StringBuilder();
+
+        // Se convierte el nombre a mayúsculas.
+        String nombreEnMayusculas = nombre.toUpperCase();
+
+        // Se filtran los caracteres permitidos.
+        for (int i = 0; i < nombreEnMayusculas.length(); i++) {
+            char caracterActual = nombreEnMayusculas.charAt(i);
+            if (CARACTERES_DISPONIBLES.indexOf(caracterActual) != -1) {
+                cadenaVerificada.append(caracterActual);
+            }
         }
+
+        // Caso en que la longitud del nombre sea menor a 3 caracteres válidos.
+        if (cadenaVerificada.length() < 3) {
+            throw new LargoDelNombreExcepcion("El nombre debe tener al menos 3 caracteres válidos.");
+        }
+
+        // Caso en que la longitud del nombre sea mayor a 15 caracteres válidos.
+        if (cadenaVerificada.length() > 15) {
+            throw new LargoDelNombreExcepcion("El nombre debe tener como máximo 15 caracteres válidos.");
+        }
+
+        // Regresa el nombre verificado.
+        return cadenaVerificada.toString();
     }
 }

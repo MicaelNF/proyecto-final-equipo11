@@ -5,12 +5,11 @@
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
  * @date 02-12-2024
- * @version 1.3
+ * @version 2.0
  */
 import java.io.*;
 import java.util.Scanner;
 import src.Verificador.*;
-import src.Verificador.VerificadorExcepciones.*;
 import src.Usuarios.*;
 import src.TorresHanoi.*;
 import src.Salvado.*;
@@ -27,14 +26,19 @@ public class Main {
 
 
         // Variables que se usan a lo largo del programa multiples veces.
-        boolean bucleSecundario = true; 
         Scanner inTexto = new Scanner(System.in);
+        boolean bucleSecundario = true;
         User usuarioEscogido = null;
 
+        // Este bloque de código contiene las variables inicializadas que ocuparan los lectores y escritores de documento.
+        String ruta = "src/Partidas/";
+        File partidas = new File(ruta);
+        File[] listaDePartidas = partidas.listFiles();
+
         // Variable que sirve como punto de separación entre las acciones del menú.
-        String guiones = "";
+        StringBuilder guiones = new StringBuilder();
         for(int i = 0; i < 120; i++) {
-            guiones += "-";
+            guiones.append("-");
         }
 
         //---------------------------------------Se inicia el programa---------------------------------------
@@ -48,35 +52,11 @@ public class Main {
         System.out.println("(1) Para crear una nueva cuenta      (2) Para reanudar una sesión      (0) Salir del programa");
         int opcion = 0;
         
-        /* 
-         * Se va a sustituir por un metodo del paquete verificador pero de mientras este bloque de codigo 
-         * se encarga de validar que la opcion ingresada sea de tipo int y además sea valida
-         */
-        boolean temporalOpciones = true;
-        while(temporalOpciones) {
-            try {
-                opcion = inTexto.nextInt();
-                if(opcion >= 0 && opcion <= 2) {
-                    temporalOpciones = false;
-                } else {
-                    System.out.println("\nOpción inválida intentalo de nuevo:");
-                    inTexto.nextLine();
-                }
-            } catch (Exception e) {
-                System.out.println("\nSolo puedes introducir números intentalo de nuevo:");
-                inTexto.nextLine();
-            }
-        }
+        // Método que que asegura y verifica que la opción sea válida.
+        opcion = VerificadorDeOpcionesInt.verificarOpcion(0, 2);
         
         // Marca el fin de la primera sección del menu
         System.out.println(guiones);
-        inTexto.nextLine();
-
-        // Este bloque de código contiene las variables inicializadas que ocuparan los lectores y escritores de documento.
-        String ruta = "src/Partidas/";
-        File partidas = new File(ruta);
-        File[] listaDePartidas = partidas.listFiles();
-        ObjectInputStream lector = null;
 
         /* 
          * Caso de que el usuario haya decidido reanudar una sesión pero que no haya sesiones existentes,
@@ -99,52 +79,18 @@ public class Main {
             case 1:
             System.out.println("Por favor introduce tu nombre (ten en cuenta que solo se aceptan números y carácteres no especiales):");
             
-            // Se inicializan las variables que se van a ocupar.
-            String nombre = "";            
-            VerificadorDeNombres nombreVerificado = null;
+            // Método encargado de verificar los nombres de usuario.         
+            String nombreVerificado = VerificadorDeNombres.verificarNombre();
 
-            // Bucle que asegura y verifica que el nombre de usuario sea valido.
-            boolean temporalNombreUsuario = true;
-            while(temporalNombreUsuario) {
-                try {
-                    nombre = inTexto.nextLine();
-                    nombreVerificado = new VerificadorDeNombres(nombre);
-                    temporalNombreUsuario = false;    
-                } catch (LargoDelNombreExcepcion e) {
-                    System.out.println("\n" + e);
-                } catch (Exception e) {
-                    System.out.println("\n" + e);
-                }
-            }
-
-            // Ciclo que se encarga de verificar que no exista una cuenta ya creada con ese nombre.
-            lector = null;
-            boolean estarepetido = true;
-            for (int i = 0; i < listaDePartidas.length; i++) {
-                ruta = "src/Partidas/";
-                ruta += listaDePartidas[i].getName();
-                File archivoParaAbrir = new File(ruta);
-
-                try {
-                    lector = new ObjectInputStream(new FileInputStream(archivoParaAbrir));
-                    User usuarioLeido = (User) lector.readObject();
-
-                    if(usuarioLeido.obtenerId().equals(nombreVerificado.toString())) {
-                        estarepetido = false;
-                    }
-
-                    lector.close();
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
+            // Método que verifica si la cuenta ya existe o aún no ha sido creada.
+            boolean esUnica = VerificadorDeCuentaUnica.esUnica(nombreVerificado, listaDePartidas);
 
             // Si la cuenta aún no existe se procede a crear el nuevo usuario.
-            if(estarepetido) {
+            if(esUnica) {
 
                 // Se manda un mensaje que verifica que efectivamente se creo el usuario con exito.
                 System.out.println("\nSe ha creado con exito el usuario " + "\"" + nombreVerificado + "\":");
-                usuarioEscogido = new User(nombreVerificado.toString());
+                usuarioEscogido = new User(nombreVerificado);
                 System.out.println(usuarioEscogido + "\n");
     
                 // Bloque de codigo encargado de guardar el usuario en un archivo .txt .
@@ -168,17 +114,14 @@ public class Main {
                 System.out.println("\nEste usuario ya existe, así que iniciaras sesión como " + nombreVerificado + ", tus datos son:\n");
                 
                 // Se lee el archivo que contenga a este usuario ya existente.
-                ruta = "src/Partidas/";
-                ruta += nombreVerificado.toString() + ".txt"; 
-                File archivoParaAbrir = new File(ruta);
                 try {
-                    lector = new ObjectInputStream(new FileInputStream(archivoParaAbrir));
-                    usuarioEscogido = (User) lector.readObject();
-                    System.out.println(usuarioEscogido + "\n");
-                    lector.close();
+                    usuarioEscogido = User.leerUsuario(User.generarRuta(nombreVerificado));
                 } catch (Exception e) {
                     System.out.println(e);
                 }
+
+                System.out.println(usuarioEscogido + "\n");
+
                 // Se marca el fin de la sección de creación de un usuario.
                 System.out.println(guiones);
             }
@@ -188,60 +131,29 @@ public class Main {
             // Se le pregunta al usuario que sesión desea reanudar.
             System.out.println("Por favor escoge que sesión quieres reanudar:");
 
-            // Se inicializan las variables que se van a ocupar.
-            opcion = 0;
-            lector = null;
-
             // Ciclo que se encarga de mostrar a todos los usuarios existentes
             for(int i = 0; i < listaDePartidas.length; i++) {
-
-                ruta = "src/Partidas/";
-                ruta += listaDePartidas[i].getName();
-                File archivoParaAbrir = new File(ruta);
+                User usuarioLeido = null;
 
                 try {
-                    lector = new ObjectInputStream(new FileInputStream(archivoParaAbrir));
-                    User usuarioLeido = (User) lector.readObject();
-                    System.out.println("\nUsuario " + (i + 1) + ":");
-                    System.out.println(usuarioLeido);
-                    lector.close();
+                    usuarioLeido = User.leerUsuario(User.generarRuta(listaDePartidas[i].getName()));
                 } catch (Exception e) {
                     System.out.println(e);
                 }
+                
+                System.out.println("\nUsuario " + (i + 1) + ":");
+                System.out.println(usuarioLeido);
             }
 
             // Se le recuerda al usuario el escoger una opción.
             System.out.print("\nEscoge una opción: ");
 
-            // Bucle que asegura y verifica que la opción sea válida.
-            temporalOpciones = true;
-            usuarioEscogido = null;
-            while(temporalOpciones) {
-                try {
-                    opcion = inTexto.nextInt();
+            // Método que que asegura y verifica que la opción sea válida.
+            opcion = VerificadorDeOpcionesInt.verificarOpcion(1, listaDePartidas.length);
 
-                    if (opcion >= 0 && opcion - 1  < listaDePartidas.length) {
-                        temporalOpciones = false;
-                    } else {
-                        System.out.println("\nLa opcion que esocgiste es invalida, vuelvelo a intentar.");
-                    }
-
-                } catch (Exception e) {
-                    System.out.println("\nSolo puedes escoger números, intentalo de nuevo:");
-                    inTexto.nextLine();
-                }
-            }
-            
             // Una vez que se escogió la opción se lee el archvio que contiene al usuario escogido.
-            ruta = "src/Partidas/";
-            ruta += listaDePartidas[opcion - 1].getName();
-            File archivoParaAbrir = new File(ruta);
             try {
-                lector = new ObjectInputStream(new FileInputStream(archivoParaAbrir));
-                usuarioEscogido = (User) lector.readObject();
-                lector.close();
-                temporalOpciones = false;
-            
+                usuarioEscogido = User.leerUsuario(User.generarRuta(listaDePartidas[opcion - 1].getName()));
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -251,7 +163,6 @@ public class Main {
 
             // Se marca el fin de la sección del menu encargada de reanudar sesiones de usuarios ya existentes.
             System.out.println(guiones);
-            inTexto.nextLine();            
                 break;
             
             // Caso de que se quiera salir del programa
@@ -271,26 +182,10 @@ public class Main {
         System.out.println("¿Que día quieres jugar?");
         System.out.println("(1) Día 1          (2) Día 2          (0) Salir del programa");
         
-        // Bucle que se encarga de asegurar y verificar que la opción sea valida.
-        opcion = 0;
-        temporalOpciones = true;
-        while (temporalOpciones) {
-            try {
-                opcion = inTexto.nextInt();
-                if (opcion >= 0 && opcion < 3) {
-                    temporalOpciones = false;
-                } else {
-                    System.out.println("\nOpción no válida");  
-                    inTexto.nextLine();   
-                }
-            } catch (Exception e) {
-                System.out.println("\nSolo puedes escoger números.");
-                inTexto.nextLine();
-            }
-        }
+        // Método que que asegura y verifica que la opción sea válida.
+        opcion = VerificadorDeOpcionesInt.verificarOpcion(0, 2);
         
         // Se marca el fin de esta parte del menú. 
-        inTexto.nextLine();
         System.out.println(guiones);
 
         // Este switch es el encargado de dirigir a el usuario a las actividades del día correspondiente.
@@ -307,26 +202,10 @@ public class Main {
                 System.out.println("¿Que juego deseas jugar?");
                 System.out.println("(1) Cuadrado mágico          (2) Conecta 4           (0) Salir del programa");
                 
-                // Bucle que se encarga de asegurar y verificar que la opción se válida.
-                opcion = 0;
-                temporalOpciones = true;
-                while (temporalOpciones) {
-                    try {
-                        opcion = inTexto.nextInt();
-                        if (opcion >= 0 && opcion < 3) {
-                            temporalOpciones = false;
-                        } else {
-                            System.out.println("\nOpción no válida");  
-                            inTexto.nextLine();   
-                        }
-                    } catch (Exception e) {
-                        System.out.println("\nSolo puedes escoger números.");
-                        inTexto.nextLine();
-                    }
-                }
+                // Método que que asegura y verifica que la opción sea válida.
+                opcion = VerificadorDeOpcionesInt.verificarOpcion(0, 2);
 
                 // Se marca el fin de esta parte del menú.
-                inTexto.nextLine();
                 System.out.println(guiones);
 
                 // Este switch contiene los juegos que se puden jugar en el día uno.
@@ -361,30 +240,14 @@ public class Main {
             bucleSecundario = true;
             while(bucleSecundario) {
 
-                // Se le pregunta al usuario que juego quiere jugar
+                // Se le pregunta al usuario que juego quiere hacer.
                 System.out.println("¿Que es lo que deseas jugar o hacer?");
                 System.out.println("(1) Salvado          (2) Torres de Hanoi           (3) Ver tu posición en el top           (0) Salir del programa");
                 
-                // Bucle que asegura y verifica que la opción sea válida.
-                opcion = 0;
-                temporalOpciones = true;
-                while (temporalOpciones) {
-                    try {
-                        opcion = inTexto.nextInt();
-                        if (opcion >= 0 && opcion <= 3) {
-                            temporalOpciones = false;
-                        } else {
-                            System.out.println("\nOpción no válida");  
-                            inTexto.nextLine();   
-                        }
-                    } catch (Exception e) {
-                        System.out.println("\nSolo puedes escoger números.");
-                        inTexto.nextLine();
-                    }
-                }
+                // Método que que asegura y verifica que la opción sea válida.
+                opcion = VerificadorDeOpcionesInt.verificarOpcion(0, 3);
 
                 // Se marca el fin de esta parte del menú
-                inTexto.nextLine();
                 System.out.println(guiones);
 
                 // Este switch contiene los juegos disponibles para este día.
@@ -434,8 +297,8 @@ public class Main {
                     // Caso de que el usuario haya escogido jugar "Torres de Hanoi".
                     case 2:
                     
-                    // Variable encragada de mantener el bucle del juego de las Torres de Hanoi hasta que haya un ganador.
-                    boolean ganador = true;
+                    // Variable encragada de dar paso al juego si hay créditos suficientes.
+                    boolean saldoSuficente = true;
 
                     // Se retira el saldo de la cuenta del usuario.
                     try {
@@ -444,138 +307,12 @@ public class Main {
                         
                         // En caso de que no cuente con los fondos suficientes se le notifica y no se le da acceso al juego. 
                         System.out.println("Lo siento no tienes saldo suficiente.");
-                        ganador = false;
+                        saldoSuficente = false;
                     }
 
-                    // Empieza el bucle principal de este juego.
-                    JuegoTorresDeHanoi juegoTorreDeHanoi = new JuegoTorresDeHanoi();                                                        
-                    while(ganador) {
-                        try {
-
-
-                            // Se muestra el estado actual del juego. Además de que le recuerda al usuario que puede salir del juego.
-                            System.out.println("                                                                                                 PRESIONA (9) PARA SALIR");
-                            System.out.println("\n" + juegoTorreDeHanoi);
-
-                            // Se solicita al usuario introducir el número de torre desde donde va a mover el disco.
-                            System.out.println("\nPor favor indica la torre desde donde quieres mover el disco: ");
-
-                            // Bucle que se encarga de asegurar y verificar que sea una opción válida.
-                            int torreDePartida = 0;
-                            temporalOpciones = true;
-                            while (temporalOpciones) {
-                                try {
-                                    torreDePartida = inTexto.nextInt();
-                                    if (torreDePartida >= 1 && torreDePartida <= 3) {
-                                        temporalOpciones = false;
-                                        
-                                    // Caso de que el usuario escoga salir del juego.
-                                    } else if(torreDePartida == 9) {
-                                        temporalOpciones = false;
-                                        ganador = false;
-
-                                        // Se le notifica lo que ha hecho y que saldra del juego sin penalizaciones.
-                                        System.out.println("¡¡Has insertado el 9 por lo que se saldrá del juego, se te regresaran tus créditos!!");
-
-                                    } else {
-                                        System.out.println("\nOpción no válida");  
-                                        inTexto.nextLine();   
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("\nSolo puedes escoger números.");
-                                    inTexto.nextLine();
-                                }
-                            }
-                            inTexto.nextLine();
-
-                            // Se verifica que el bucle siga activo lo que quiere decir que el usuario no haya decidido salir del juego.
-                            int torreDeDestino = 0;
-                            if (ganador) {
-                                
-                                // Se le solicita al usuario la torre a la que quiere mover su disco.
-                                System.out.println("\nPor favor indica la torre a donde quieres mover el disco: ");
-
-                                // Bucle que se encarga de asegurar y verificar que la opcion sea valida.
-                                torreDeDestino = 0;
-                                temporalOpciones = true;
-                                while (temporalOpciones) {
-                                    try {
-                                        torreDeDestino = inTexto.nextInt();
-                                        if (torreDeDestino >= 1 && torreDeDestino <= 3) {
-                                            temporalOpciones = false;
-
-                                        // Caso de que el usuario escoga salir del juego.                                        
-                                        } else if(torreDeDestino == 9) {
-                                            temporalOpciones = false;
-                                            ganador = false;
-
-                                            // Se le notifica lo que ha hecho y que saldra del juego sin penalizaciones.
-                                            System.out.println("¡¡Has insertado el 9 por lo que se saldrá del juego, se te regresaran tus créditos!!");
-                                        } else {
-                                            System.out.println("\nOpción no válida");  
-                                            inTexto.nextLine();   
-                                        }
-                                    } catch (Exception e) {
-                                        System.out.println("\nSolo puedes escoger números.");
-                                        inTexto.nextLine();
-                                    }
-                                }
-                            }
-                            
-                            // Si el bucle sigue activo se mueve la pieza.
-                            if(ganador == true) {
-                                juegoTorreDeHanoi.moverPieza(torreDePartida - 1, torreDeDestino - 1);
-                            }                            
-
-                            // Caso de que se haya completado el juego.
-                            if(juegoTorreDeHanoi.esGanador()) {
-                                
-                                // Se imprime el juego ganador
-                                System.out.println("\n" + juegoTorreDeHanoi);
-
-                                // Se inicializa la variable de los putnos.
-                                int puntosObtenidos = 0;
-
-                                // Se calculan los puntos obtenidos.
-                                if(juegoTorreDeHanoi.obtenerNumeroDeJugadas() == 63) {
-                                    puntosObtenidos = 10;
-                                }
-
-                                if(juegoTorreDeHanoi.obtenerNumeroDeJugadas() <= 73) {
-                                    puntosObtenidos = 5;
-                                }
-
-                                if(juegoTorreDeHanoi.obtenerNumeroDeJugadas() > 73){
-                                    puntosObtenidos = 2;
-                                }
-
-                                // Se suman los puntos obtenidos al usuario.
-                                usuarioEscogido.sumarPuntos(puntosObtenidos);
-
-                                // Se le notifica al usuario en cuantos movimientos completo el juego y cuantos puntos gano.
-                                System.out.println("\nHas completado el juego en " + juegoTorreDeHanoi.obtenerNumeroDeJugadas() + " jugadas");
-                                System.out.println("¡¡FELICIDADES HAS GANADO " + puntosObtenidos + " PUNTOS!!");
-
-                                // Se apaga el bucle del juego.
-                                ganador = false;
-                            }
-
-                            // Caso de que el jugador haya decidido salir a mitad del juego.
-                            if(!(juegoTorreDeHanoi.esGanador()) && !(ganador)) {
-                                
-                                // Se le regresan sus créditos
-                                usuarioEscogido.aumentarSaldo(15);
-                            }
-
-                            // Marca el fin de cada jugada, mientras no sea ganadora o no se haya salido del juego.
-                            if(!(juegoTorreDeHanoi.esGanador()) && ganador) {
-                                inTexto.nextLine();
-                                System.out.println(guiones);
-                            }
-
-                        } catch (Exception e) {
-                            System.out.println("\n" + e);
-                        }
+                    // Si se cuenta con el saldo suficiente se inicia el juego.
+                    if(saldoSuficente) {
+                        JuegoTorresDeHanoi.JugarTorresDeHanoi(usuarioEscogido);
                     }
                         break;
                     
@@ -597,7 +334,7 @@ public class Main {
                             System.out.println(listaOrdenada.obtenerUsuarioEnPosicion(i));
                         }
                     } catch (Exception e) {
-                        System.out.println("Aún no hay suficientes usuarios existentes para un top " + i);
+                        System.out.println("Aún no hay suficientes usuarios existentes para un top " + (i + 1));
                     }
 
                     // Se imprime en que posición se encuentra la sesión actual.
@@ -632,38 +369,19 @@ public class Main {
                 System.out.println("¿Deseas seguir explorando la feria?");
                 System.out.println("(1) Sí              (0) No");
 
-                // Bucle que asegura y verifica que la opcion sea válida.
-                opcion = 0;
-                temporalOpciones = true;
-                while (temporalOpciones) {
-                    try {
-                        opcion = inTexto.nextInt();
+                // Método que que asegura y verifica que la opción sea válida.
+                opcion = VerificadorDeOpcionesInt.verificarOpcion(0,1);
 
-                        // Caso de que desee salir del programa
-                        if (opcion == 0) {
-                            temporalOpciones = false;
-                            
-                            // Se le da la despedida y se apaga el programa 
-                            System.out.println(guiones);
-                            System.out.println("Gracias por haber usado este programa nos vemos luego.");
-                            System.out.println(guiones);
-                            System.exit(0);
-
-                        // Caso de que desee continuar en el programa, solo se apaga el bucle que verifica la opción.
-                        } else if (opcion == 1) {
-                            temporalOpciones = false;
-                        }else {
-                            System.out.println("\nOpción no válida");  
-                            inTexto.nextLine();   
-                        }
-                    } catch (Exception e) {
-                        System.out.println("\nSolo puedes escoger números.");
-                        inTexto.nextLine();
-                    }
+                // Caso de que se decida salir de programa.
+                if(opcion == 0) {
+                    // Se le da la despedida y se apaga el programa 
+                    System.out.println(guiones);
+                    System.out.println("Gracias por haber usado este programa nos vemos luego.");
+                    System.out.println(guiones);
+                    System.exit(0);
                 }
 
                 // Se marca el fin de esta sección del menú.
-                inTexto.nextLine();
                 System.out.println(guiones);
             }
                 break;

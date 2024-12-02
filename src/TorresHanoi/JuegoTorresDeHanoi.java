@@ -1,117 +1,133 @@
 /**
- * Clase {@code JuegoTorresDeHanoi} que representa el juego completo de las Torres de Hanoi.
- * Esta clase es heredada de la clase {@code Torre} y gestiona tres torres del juego.
- * Incluye métodos para inicializar el juego, mover discos entre torres, y generar una representación visual 
- * del estado actual del juego.
+ * Clase {@code JuegoTorresDeHanoi} que implementa la lógica del juego de las Torres de Hanoi.
+ * Permite al usuario mover discos entre tres torres con el objetivo de completar el juego
+ * en el menor número de movimientos posible.
+ * 
+ * El juego puede mover discos entre torres, y al mismo tiempo asegurar que los movimientos sean 
+ * válidos, calcular los puntos obtenidos según el número de movimientos realizados, permitir al 
+ * usuario salir del juego en cualquier momento, sin penalización de créditos y verificar si el usuario 
+ * ha completado el juego exitosamente, para así sumarle sus puntos.
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 27-11-2024
- * @version 1.2
+ * @date 02-12-2024
+ * @version 1.0
  */
 package src.TorresHanoi;
-import src.TorresHanoi.TorresHanoiExcepciones.*;
 
-public class JuegoTorresDeHanoi extends Torre {
-    private Torre[] juegoTorreDeHanoi = new Torre[3];
-    static int jugadas = 0;
+import src.Usuarios.User;
+import src.Verificador.VerificadorDeOpcionesInt;
 
-    /**
-     * Constructor por omisión de la clase {@code JuegoTorresDeHanoi}.
-     * Inicializa las tres torres del juego y llena la primera torre con 6 discos ordenados.
-     */
-    public JuegoTorresDeHanoi() {
-        for (int i = 0; i < juegoTorreDeHanoi.length; i++) {
-            juegoTorreDeHanoi[i] = new Torre();    
-        }
-        // Se llena la primera torre con discos en orden creciente.
-        juegoTorreDeHanoi[0].llenarTorre(); 
-    }
+public class JuegoTorresDeHanoi {
 
-    /**
-     * Constructor por parámetros de la clase {@code JuegoTorresDeHanoi}.
-     * Inicializa las tres torres del juego y llena la primera torre con la cantidad de discos 
-     * especificada por el parámetro {@code numeroDeDiscos}.
-     * 
-     * @param numeroDeDiscos la cantidad de discos iniciales en la primera torre.
-     * @throws Exception si ocurre un error durante la inicialización de las torres.
-     */
-    public JuegoTorresDeHanoi(int numeroDeDiscos) throws Exception {
-            for (int i = 0; i < juegoTorreDeHanoi.length; i++) {
-                juegoTorreDeHanoi[i] = new Torre(numeroDeDiscos);    
-            }
-            // Se llena la primera torre con discos en orden creciente.
-            juegoTorreDeHanoi[0].llenarTorre(); 
-    }
+    public static void JugarTorresDeHanoi(User usuarioEscogido) {
 
-    /**
-     * Mueve el disco superior de una torre de origen a una torre de destino.
-     * 
-     * @param torreDePartida la torre desde la que se desea mover el disco.
-     * @param torreDestino la torre a la que se desea mover el disco.
-     * @throws NumeroDeTorreExcepcion si la torre de partida o de destino no es válida (fuera del rango 0-2).
-     * @throws IllegalArgumentException si los índices de las torres son negativos.
-     * @throws NumeroDeDiscosExcepcion si no hay discos en la torre de partida.
-     * @throws DiscoMasGrandeExcepcion si se intenta colocar un disco más grande sobre uno más pequeño.
-     */
-    public void moverPieza(int torreDePartida, int torreDestino) throws Exception {
-        
-        // Caso de que la torre de partida o la destino tengan una posición negativa
-        if (torreDePartida < 0 || torreDestino < 0) {
-            throw new NumeroDeTorreExcepcion("No puedes escoger una torre con un número negativo.");
+        // Delimita el fin de cada jugada.
+        StringBuilder guiones = new StringBuilder();
+        for(int i = 0; i < 120; i++) {
+            guiones.append("-");
         }
 
-        // Caso de que se escoga una torre con una posición mayor a 2
-        if (torreDePartida > 2 || torreDestino > 2) {
-            // Se muestra 3 ya que es lo que ve el usuario.
-            throw new NumeroDeTorreExcepcion("No puedes escoger una torre mayor a 3"); 
+        // Boolean que mantiene el juego encendido.
+        boolean continuar = true;
+
+        // Se inicializa una representación de este juego.
+        TorresDeHanoi juegoTorreDeHanoi = new TorresDeHanoi();
+
+        // Empieza el bucle principal de este juego.
+        while(continuar) {
+            try {
+                
+                // Se muestra el estado actual del juego. Además de que le recuerda al usuario que puede salir del juego.
+                System.out.println("                                                                                                 PRESIONA (9) PARA SALIR");
+                System.out.println("\n" + juegoTorreDeHanoi);
+
+                // Se solicita al usuario introducir el número de torre desde donde va a mover el disco.
+                System.out.println("\nPor favor indica la torre desde donde quieres mover el disco: ");
+
+                // Método que que asegura y verifica que la opción sea válida.
+                int torreDePartida = VerificadorDeOpcionesInt.verificarOpcion(1, 3, 9);
+                
+                // Caso de que el usuario escoga salir del juego.
+                if(torreDePartida == 9) {
+                    continuar = false;
+
+                    // Se le notifica lo que ha hecho y que saldra del juego sin penalizaciones.
+                    System.out.println("¡¡Has insertado el 9 por lo que se saldrá del juego, se te regresaran tus créditos!!");
+                }
+
+                // Se verifica que el bucle siga activo lo que quiere decir que el usuario no haya decidido salir del juego.
+                int torreDeDestino = 0;
+                if (continuar) {
+                    
+                    // Se le solicita al usuario la torre a la que quiere mover su disco.
+                    System.out.println("\nPor favor indica la torre a donde quieres mover el disco: ");
+
+                    // Método que que asegura y verifica que la opción sea válida.  
+                    torreDeDestino = VerificadorDeOpcionesInt.verificarOpcion(1, 3, 9);
+                
+                    // Caso de que el usuario escoga salir del juego.
+                    if(torreDeDestino == 9) {
+                        continuar = false;
+
+                        // Se le notifica lo que ha hecho y que saldra del juego sin penalizaciones.
+                        System.out.println("¡¡Has insertado el 9 por lo que se saldrá del juego, se te regresaran tus créditos!!");
+                    }     
+                }
+                
+                // Si el bucle sigue activo se mueve la pieza.
+                if(continuar == true) {
+                    juegoTorreDeHanoi.moverPieza(torreDePartida - 1, torreDeDestino - 1);
+                }                            
+
+                // Caso de que se haya completado el juego.
+                if(juegoTorreDeHanoi.esGanador()) {
+                    
+                    // Se imprime el juegocontinuar 
+                    System.out.println("\n" + juegoTorreDeHanoi);
+
+                    // Se inicializa la variable de los puntos.
+                    int puntosObtenidos = 0;
+
+                    // Se calculan los puntos obtenidos.
+                    if(juegoTorreDeHanoi.obtenerNumeroDeJugadas() == 63) {
+                        puntosObtenidos = 10;
+                    }
+
+                    if(juegoTorreDeHanoi.obtenerNumeroDeJugadas() <= 73) {
+                        puntosObtenidos = 5;
+                    }
+
+                    if(juegoTorreDeHanoi.obtenerNumeroDeJugadas() > 73){
+                        puntosObtenidos = 2;
+                    }
+
+                    // Se suman los puntos obtenidos al usuario.
+                    usuarioEscogido.sumarPuntos(puntosObtenidos);
+
+                    // Se le notifica al usuario en cuantos movimientos completo el juego y cuantos puntos gano.
+                    System.out.println("\nHas completado el juego en " + juegoTorreDeHanoi.obtenerNumeroDeJugadas() + " jugadas");
+                    System.out.println("¡¡FELICIDADES HAS GANADO " + puntosObtenidos + " PUNTOS!!");
+
+                    // Se apaga el bucle del juego.
+                    continuar = false;
+                }
+
+                // Caso de que el jugador haya decidido salir a mitad del juego.
+                if(!(juegoTorreDeHanoi.esGanador()) && !(continuar)) {
+                    
+                    // Se le regresan sus créditos
+                    usuarioEscogido.aumentarSaldo(15);
+                }
+
+                // Marca el fin de cada jugada, mientras no sea continuara o no se haya salido del juego.
+                if(!(juegoTorreDeHanoi.esGanador()) && continuar) {
+                    System.out.println(guiones);
+                }
+            
+            } catch (Exception e) {
+                System.out.println("\n" + e);
+            }                       
         }
-        
-        // Se usa un método de la super clase para mover la pieza, este ya tiene sus excepciones.
-        juegoTorreDeHanoi[torreDePartida].asignarDisco(juegoTorreDeHanoi[torreDestino]);
-
-        // Si se pasa todo lo anterior sin problema se suma 1 jugada.
-        jugadas++;
-    }
-
-    /**
-     * Verifica si el jugador ha ganado el juego.
-     * La condición de victoria se cumple cuando todos los discos están en la tercera torre.
-     * 
-     * @return {@code true} si el jugador ha ganado; {@code false} en caso contrario.
-     */
-    public boolean esGanador() {
-        return juegoTorreDeHanoi[2].esGanador();
-    }
-
-    /**
-     * Devuelve el número de jugadas hechas.
-     * 
-     * @return el número de jugadas que se han hecho.
-     */
-    public int obtenerNumeroDeJugadas() {
-        return jugadas;
-    }
-
-    /**
-     * Genera una representación visual del estado actual del juego.
-     * Muestra los discos en las tres torres en formato ASCII.
-     * 
-     * @return una cadena que representa gráficamente el estado actual del juego.
-     */
-    @Override
-    public String toString() {
-        String cadena = "";
-        String espacioBlanco = "      ";
-        for (int i = 0; i < juegoTorreDeHanoi[0].length(); i++) {
-            cadena += representacionDeDiscos(juegoTorreDeHanoi[0].obtenerDisco(i)) + espacioBlanco +
-                      representacionDeDiscos(juegoTorreDeHanoi[1].obtenerDisco(i)) + espacioBlanco +
-                      representacionDeDiscos(juegoTorreDeHanoi[2].obtenerDisco(i)) + "\n";
-            if (i == juegoTorreDeHanoi[0].length() - 1) {
-                cadena += "    Torre 1    " + espacioBlanco + "    Torre 2    " + espacioBlanco + "    Torre 3    ";
-            }
-        }
-        return cadena;
     }
 }
-

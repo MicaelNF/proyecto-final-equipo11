@@ -1,21 +1,21 @@
 /**
- * Clase {@code LargoDelNombreException} que representa una excepción 
+ * Clase {@code LargoDelNombreExcepcion} que representa una excepción 
  * cuando el nombre proporcionado no cumple con la longitud establecida.
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 27-11-2024
- * @version 1.1
+ * @date 02-12-2024
+ * @version 1.3
  */
 package src.Verificador.VerificadorExcepciones;
 
-public class LargoDelNombreException extends Exception {
+public class LargoDelNombreExcepcion extends Exception {
 
     /**
      * Constructor por omisión de la clase {@code LargoDelNombreException}.
      * Inicializa la excepción sin un mensaje específico.
      */
-    public LargoDelNombreException() {
+    public LargoDelNombreExcepcion() {
         super();
     }
 
@@ -25,7 +25,7 @@ public class LargoDelNombreException extends Exception {
      * 
      * @param e el mensaje que describe el motivo de la excepción.
      */
-    public LargoDelNombreException(String e) {
+    public LargoDelNombreExcepcion(String e) {
         super(e);
     }
 }

@@ -5,15 +5,16 @@
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 27-11-2024
- * @version 1.1
+ * @date 02-12-2024
+ * @version 1.4
  */
 package src.Usuarios;
 
 import java.io.*;
+import java.util.Comparator;
 import src.Usuarios.UsuariosExcepciones.*;
 
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User>, Comparator<User>{
 
     private int saldo;
     private String id;
@@ -148,6 +149,72 @@ public class User implements Serializable {
         // Se guarda el archivo.
         grabador.writeObject(this);
         grabador.close();
+    }
+
+    /**
+     * Lee un usuario desde un archivo.
+     * El archivo debe contener un objeto serializado de tipo {@code User}.
+     * 
+     * @param rutaDelUsuario El archivo desde el cual se leerá el usuario.
+     * @return El usuario leído desde el archivo.
+     * @throws Exception si ocurre un error al leer el archivo.
+     */
+    public static User leerUsuario(File rutaDelUsuario) throws Exception {
+        ObjectInputStream lector = new ObjectInputStream(new FileInputStream(rutaDelUsuario));
+        User usuarioEscogido = (User) lector.readObject();
+        lector.close();
+        return usuarioEscogido;
+    }
+
+    /**
+     * Genera la ruta completa de un archivo a partir del nombre del archivo proporcionado.
+     * Si el nombre no contiene una extensión, se añade ".txt" automáticamente.
+     * 
+     * @param nombreDelArchivo El nombre del archivo para el cual se generará la ruta.
+     * @return Un objeto {@code File} que representa la ruta del archivo.
+     */
+    public static File generarRuta(String nombreDelArchivo) {
+        String ruta = "";
+        // Caso de que el archivo no tenga la terminación .txt .
+        if (nombreDelArchivo.indexOf('.') == -1) {
+            ruta = "src/Partidas/";
+
+            // Se le agrega la terminación.
+            ruta += nombreDelArchivo + ".txt";
+
+        // Caso de que el archivo ya tenga la terminación .txt .
+        } else {
+            ruta = "src/Partidas/";
+            ruta += nombreDelArchivo;
+        }
+
+        // Se regresa la ruta del archivo.
+        return new File(ruta);
+    }
+
+    /**
+     * Compara dos {@code User} de acuerdo a su puntuación.
+     * Devuelve un valor negativo si el usuario que se esta comparando es menor, positivo si la puntuación es mayor 
+     * y 0 si ambos son iguales respecto a la puntuación.
+     * 
+     * @param usuarioComparado el primer usuario a comparar.
+     * @param usuarioAComparar el segundo usuario a comparar.
+     * @return un valor negativo si es menor, positivo es mayor y 0 si su puntuación es la misma.
+     */
+    @Override
+    public int compare(User usuarioComparado, User usuarioAComparar) {
+        return Integer.compare(usuarioComparado.obtenerPuntos(), usuarioAComparar.obtenerPuntos());
+    }
+
+    /**
+     * Compara al usuario con el que se manda a llamr al método con otro usuario de acuerdo a su puntuación.
+     * 
+     * @param usuarioAComparar el usuario con el que se va a comparar.
+     * @return un valor negativo si es menor, positivo es mayor y 0 si su puntuación es la misma.
+     */
+    @Override
+    public int compareTo(User usuarioAComparar) {
+        return compare(this, usuarioAComparar);
     }
 
     /**

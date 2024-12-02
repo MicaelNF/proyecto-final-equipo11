@@ -25,7 +25,7 @@ public class VerificadorDeNombres {
      * 
      * @param nombre el nombre que se desea verificar.
      * @throws IllegalArgumentException si el nombre proporcionado es nulo.
-     * @throws LargoDelNombreException si el nombre no cumple con los requisitos de longitud.
+     * @throws LargoDelNombreExcepcion si el nombre no cumple con los requisitos de longitud.
      */
     public VerificadorDeNombres(String nombre) throws Exception {
         
@@ -46,10 +46,10 @@ public class VerificadorDeNombres {
      * y valida la longitud resultante. Si el nombre tiene menos de 5 caracteres o más de 10,
      * se lanza una excepción.
      * 
-     * @throws LargoDelNombreException si la longitud del nombre verificado es menor a 5 
+     * @throws LargoDelNombreExcepcion si la longitud del nombre verificado es menor a 5 
      *         o mayor a 10 caracteres alfabéticos válidos.
      */
-    private void verificarNombre() throws LargoDelNombreException {
+    private void verificarNombre() throws LargoDelNombreExcepcion {
         String cadenaVerificada = "";
         String caracteresDisponibles = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -62,11 +62,11 @@ public class VerificadorDeNombres {
 
         // Verifica si la longitud es válida.
         if (cadenaVerificada.length() < 3) {
-            throw new LargoDelNombreException("Tu nombre debe de tener al menos 3 caracteres válidos.");
+            throw new LargoDelNombreExcepcion("Tu nombre debe de tener al menos 3 caracteres válidos.");
         }
 
         if (cadenaVerificada.length() > 15) {
-            throw new LargoDelNombreException("Tu nombre debe de tener como máximo 15 caracteres válidos.");
+            throw new LargoDelNombreExcepcion("Tu nombre debe de tener como máximo 15 caracteres válidos.");
         }
 
         // Asigna el nombre validado.

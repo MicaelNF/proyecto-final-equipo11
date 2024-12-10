@@ -6,8 +6,8 @@
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 02-12-2024
- * @version 1.0
+ * @date 10-12-2024
+ * @version 1.1
  */
 package src.Ordenamiento;
 
@@ -120,6 +120,53 @@ public class OrdenamientoDeUsuarios {
         } else {
             throw new UsuarioNoExistenteExcepcion("No existe dicho usuario.");
         }
+    }
+
+    /**
+     * Muestra el podio de los tres primeros lugares en el ranking de usuarios, 
+     * así como la posición de un usuario específico dentro de la lista.
+     * 
+     * @param usuarioEscogido el objeto {@code User} cuya posición en el ranking será mostrada.
+     * @throws Exception si ocurre un error al leer los archivos o al procesar
+     *         la lista de usuarios.
+     */
+    public static void mostrarPodio(User usuarioEscogido) {
+        
+        // Este bloque de código contiene las variables inicializadas que ocuparan los lectores y escritores de documento.
+        String ruta = "src/Partidas/";
+        File partidas = new File(ruta);
+        File[] listaDePartidas = partidas.listFiles();
+
+        // Se inicializan las variables que se van a usar para evitar problemas.
+        int i = 0;
+        OrdenamientoDeUsuarios listaOrdenada = null;
+
+        try {
+
+            // Se ordena la lista de usuarios.
+            listaOrdenada = new OrdenamientoDeUsuarios(listaDePartidas);
+            listaOrdenada.ordenarLista();
+
+            // Se imprimen los tres primeros usuarios.
+            System.out.println("\n------Podio de los tres primeros lugares------");
+            for (i = 0; i < 3; i++) {
+                System.out.println("\nTop " + (i + 1) + ":");
+                System.out.println(listaOrdenada.obtenerUsuarioEnPosicion(i));
+            }
+
+        // Caso de que no haya suficientes usuarios para un top 3 de usuarios.
+        } catch (Exception e) {
+            System.out.println("Aún no hay suficientes usuarios existentes para un top " + (i + 1));
+        }
+
+        // Se imprime en que posición se encuentra la sesión actual.
+        try {
+            System.out.println("\n------Posición de la sesión actual------");
+            System.out.println("Top " + (listaOrdenada.obtenerPosicionDeUsuario(usuarioEscogido.obtenerId()) + 1) + ":");
+            System.out.println(usuarioEscogido); 
+        } catch (Exception e) {
+            System.out.println(e);
+        }               
     }
 
     /**

@@ -20,7 +20,7 @@ import src.Verificador.VerificadorDeOpcionesInt;
 
 public class JuegoTorresDeHanoi {
 
-    public static void JugarTorresDeHanoi(User usuarioEscogido) {
+    public static void jugarTorresDeHanoi(User usuarioEscogido) {
 
         // Delimita el fin de cada jugada.
         StringBuilder guiones = new StringBuilder();

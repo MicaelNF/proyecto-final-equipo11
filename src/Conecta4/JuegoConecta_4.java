@@ -233,7 +233,7 @@ public class JuegoConecta_4 {
             
             // Se indica la excepción y de forma recursiva se vuelve a ejecutar el método.
             } catch (Exception e) {
-                System.out.println("\n" + e);
+                System.out.println("\n" + guiones + "\n" + e.getMessage() + " Inténtalo de nuevo:");
                 verificarJugada(fichaEscogida, usuarioEscogido);
             }
         }

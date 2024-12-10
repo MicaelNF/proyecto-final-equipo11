@@ -53,6 +53,7 @@ public class JuegoTorresDeHanoi {
                     continuar = false;
 
                     // Se le notifica lo que ha hecho y que saldra del juego sin penalizaciones.
+                    System.out.println(guiones);
                     System.out.println("¡¡Has insertado el 9 por lo que se saldrá del juego, se te regresaran tus créditos!!");
                 }
 
@@ -127,7 +128,7 @@ public class JuegoTorresDeHanoi {
                 }
             
             } catch (Exception e) {
-                System.out.println("\n" + e);
+                System.out.println("\n" + guiones + "\n" + e.getMessage() + " Inténtalo de nuevo:");
             }                       
         }
     }

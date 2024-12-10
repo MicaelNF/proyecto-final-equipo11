@@ -1,3 +1,10 @@
+/**
+ * 
+ * @author Nolasco Flores Micael
+ * @author Romualdo Valera Seyin Xuxek
+ * @date 10-12-2024
+ * @version 1.1
+ */
 package src.Conecta4;
 
 import src.Conecta4.Conecta4Excepciones.ColumnaLlenaExcepcion;
@@ -24,13 +31,13 @@ public class Conecta_4 {
     }
 
     public boolean esGanador() {
-        for(int i = 0; i < tablero[0].length; i++) {
+        for(int i = 0; i < tablero.length; i++) {
             if(columnaGanadora(i) || filaGanadora(i) || diagonalGanadora(i)) {
                 return true;
             }
         }
 
-        if(filaGanadora(tablero.length - 1)) {
+        if(columnaGanadora(6) || diagonalGanadora(6)) {
             return true;
         }
 
@@ -60,10 +67,17 @@ public class Conecta_4 {
             return false;
         }
 
-        int numeroDeIteraciones = -1 * (espaciosEnBlancoColumna(columna) - 3);
-        for(int i = espaciosEnBlancoColumna(columna); i < numeroDeIteraciones; i++) {
-            if(tablero[i][columna] == tablero[i + 1][columna] && tablero[i][columna] == tablero[i + 2][columna] && tablero[i][columna] == tablero[i + 3][columna]) {
-                return true;
+        boolean encendido = true;
+        int i = 0;
+
+        while(encendido) {
+            try {
+                if(tablero[i][columna] == tablero[i + 1][columna] && tablero[i][columna] == tablero[i + 2][columna] && tablero[i][columna] == tablero[i + 3][columna]) {
+                    return true;
+                }
+                i++;
+            } catch (Exception e) {
+                encendido = false;
             }
         }
 
@@ -76,9 +90,17 @@ public class Conecta_4 {
             return false;
         }
 
-        for(int i = 0; i < 4; i++) {
-            if(tablero[fila][i] == tablero[fila][i + 1] && tablero[fila][i] == tablero[fila][i + 2] && tablero[fila][i] == tablero[fila][i + 3]) {
-                return true;
+        boolean encendido = true;
+        int i = 0;
+
+        while(encendido) {
+            try {
+                if(tablero[fila][i] == tablero[fila][i + 1] && tablero[fila][i] == tablero[fila][i + 2] && tablero[fila][i] == tablero[fila][i + 3]) {
+                    return true;
+                }
+                i++;
+            } catch (Exception e) {
+                encendido = false;
             }
         }
 
@@ -144,7 +166,7 @@ public class Conecta_4 {
 
         System.out.println(prueba);
         try {
-            prueba.insertarJugada('X', 6);
+            prueba.insertarJugada('X', 0);
             System.out.println(prueba);
         } catch (Exception e) {
             System.out.println(e);

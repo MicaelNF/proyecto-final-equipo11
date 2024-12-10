@@ -5,9 +5,8 @@
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
  * @date 10-12-2024
- * @version 2.1
+ * @version 2.2
  */
-import java.io.*;
 import java.util.Scanner;
 import src.Verificador.*;
 import src.Usuarios.*;
@@ -16,7 +15,10 @@ import src.Salvado.*;
 import src.Salvado.SalvadoExcepciones.*;
 import src.Conecta4.JuegoConecta_4;
 import src.Ordenamiento.*;
+
 public class Main {
+    // Variable que delimita el fin de una sección del menú.
+    private static String guiones = "";
 
     /**
      * El método principal que se encarga de llevar a cabo todo la lógica del programa.
@@ -25,23 +27,18 @@ public class Main {
      */
     public static void main(String[] args) {
 
-
         // Variables que se usan a lo largo del programa multiples veces.
         Scanner inTexto = new Scanner(System.in);
         boolean bucleSecundario = true;
         User usuarioEscogido = null;
         int opcion = 0;
 
-        // Este bloque de código contiene las variables inicializadas que ocuparan los lectores y escritores de documento.
-        String ruta = "src/Partidas/";
-        File partidas = new File(ruta);
-        File[] listaDePartidas = partidas.listFiles();
-
-        // Variable que sirve como punto de separación entre las acciones del menú.
-        StringBuilder guiones = new StringBuilder();
+        // Se marca el largo del delimitante del menú
+        StringBuilder guionesBuilder = new StringBuilder();
         for(int i = 0; i < 120; i++) {
-            guiones.append("-");
+            guionesBuilder.append("-");
         }
+        guiones = guionesBuilder.toString();
 
         //---------------------------------------Se inicia el programa---------------------------------------
 
@@ -77,10 +74,10 @@ public class Main {
                 
                 // Se le pregunta al usuario que juego desea jugar.
                 System.out.println("¿Que juego deseas jugar?");
-                System.out.println("(1) Cuadrado mágico          (2) Conecta 4           (0) Salir del programa");
+                System.out.println("(1) Cuadrado mágico          (2) Conecta 4          (3) Ver tu posición en el top           (0) Salir del programa");
                 
                 // Método que que asegura y verifica que la opción sea válida.
-                opcion = VerificadorDeOpcionesInt.verificarOpcion(0, 2);
+                opcion = VerificadorDeOpcionesInt.verificarOpcion(0, 3);
 
                 // Se marca el fin de esta parte del menú.
                 System.out.println(guiones);
@@ -105,45 +102,20 @@ public class Main {
                     } catch (Exception e) {
                         System.out.println("Lo siento no tienes saldo suficiente.");
                     }
+                        break;
 
+                    // Caso de que quieran ver el top de jugadores y su posición    
+                    case 3:
+                    OrdenamientoDeUsuarios.mostrarPodio(usuarioEscogido);
                         break;
                 
                     // Caso de que el usuario quiera salir del programa.    
                     case 0:
-                    System.out.println("Gracias por haber usado este programa nos vemos luego.");
-                    System.out.println(guiones);
-                    System.exit(0);
+                    finalizarPrograma();
                         break;
                 }
-
-                // Al finalizar los juegos se guarda al usuario con sus nuevos datos.
-                try {
-                    usuarioEscogido.guardarUsuario();
-                } catch (Exception e) {
-                    System.out.println(e);
-                }                        
-                
-                // Se marca el fin de el juego.
-                System.out.println(guiones);
-
-                // Se le pregunta al usuario si quiere seguir explorando la feria o no.
-                System.out.println("¿Deseas seguir explorando la feria?");
-                System.out.println("(1) Sí              (0) No");
-
-                // Método que que asegura y verifica que la opción sea válida.
-                opcion = VerificadorDeOpcionesInt.verificarOpcion(0,1);
-
-                // Caso de que se decida salir de programa.
-                if(opcion == 0) {
-                    // Se le da la despedida y se apaga el programa 
-                    System.out.println(guiones);
-                    System.out.println("Gracias por haber usado este programa nos vemos luego.");
-                    System.out.println(guiones);
-                    System.exit(0);
-                }
-
-                // Se marca el fin de esta sección del menú.
-                System.out.println(guiones);
+                // Método encargado de marcar el fin de un juego y desplegar un menú de opciones a realizar.                     
+                finDelJuego(usuarioEscogido);
             }
                 break;
 
@@ -224,83 +196,70 @@ public class Main {
                     
                     // Caso de que quieran ver el top de jugadores y su posición    
                     case 3:
-
-                    // Se inicializan las variables que se van a usar para evitar problemas.
-                    int i = 0;
-                    OrdenamientoDeUsuarios listaOrdenada = null;
-                    try {
-                        // Se ordena la lista de usuarios.
-                        listaOrdenada = new OrdenamientoDeUsuarios(listaDePartidas);
-                        listaOrdenada.ordenarLista();
-
-                        // Se imprimen los tres primeros usuarios.
-                        System.out.println("\n------Podio de los tres primeros lugares------");
-                        for (i = 0; i < 3; i++) {
-                            System.out.println("\nTop " + (i + 1) + ":");
-                            System.out.println(listaOrdenada.obtenerUsuarioEnPosicion(i));
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Aún no hay suficientes usuarios existentes para un top " + (i + 1));
-                    }
-
-                    // Se imprime en que posición se encuentra la sesión actual.
-                    try {
-                        System.out.println("\n------Posición de la sesión actual------");
-                        System.out.println("Top " + (listaOrdenada.obtenerPosicionDeUsuario(usuarioEscogido.obtenerId()) + 1) + ":");
-                        System.out.println(usuarioEscogido); 
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
+                    OrdenamientoDeUsuarios.mostrarPodio(usuarioEscogido);
                         break;
                 
-                    // Caso de que quieran salir del programa    
+                    // Caso de que se quiera salir del programa    
                     case 0:
-                    System.out.println("Gracias por haber usado este programa nos vemos luego.");
-                    System.out.println(guiones);
-                    System.exit(0);
+                    finalizarPrograma();
                         break;
-                }                     
-                
-                // Al finalizar los juegos se guarda al usuario con sus nuevos datos.
-                try {
-                    usuarioEscogido.guardarUsuario();
-                } catch (Exception e) {
-                    System.out.println(e);
-                }                        
-                
-                // Se marca el fin de el juego.
-                System.out.println(guiones);
-
-                // Se le pregunta al usuario si quiere seguir explorando la feria o no.
-                System.out.println("¿Deseas seguir explorando la feria?");
-                System.out.println("(1) Sí              (0) No");
-
-                // Método que que asegura y verifica que la opción sea válida.
-                opcion = VerificadorDeOpcionesInt.verificarOpcion(0,1);
-
-                // Caso de que se decida salir de programa.
-                if(opcion == 0) {
-                    // Se le da la despedida y se apaga el programa 
-                    System.out.println(guiones);
-                    System.out.println("Gracias por haber usado este programa nos vemos luego.");
-                    System.out.println(guiones);
-                    System.exit(0);
                 }
 
-                // Se marca el fin de esta sección del menú.
-                System.out.println(guiones);
+                // Método encargado de marcar el fin de un juego y desplegar un menú de opciones a realizar.                     
+                finDelJuego(usuarioEscogido);
             }
                 break;
             
-            // Caso de que quiera salir del programa.    
+            // Caso de que se quiera salir del programa.    
             case 0:
-            System.out.println("Gracias por haber usado este programa nos vemos luego.");
-            System.out.println(guiones);
-            System.exit(0);
+            finalizarPrograma();
                 break;
         }
 
         // Se cierra el Scanner.
         inTexto.close();
+    }
+
+    /**
+     * Método que finaliza la ejecución del programa mostrando un mensaje de despedida al usuario.
+     */
+    public static void finalizarPrograma() {
+        System.out.println("Gracias por haber usado este programa nos vemos luego.");
+        System.out.println(guiones);
+        System.exit(0);
+    }
+
+    /**
+     * Método que finaliza el juego para un usuario y ofrece la opción de continuar explorando la feria o 
+     * salir del programa.
+     * @param usuarioEscogido el usuario actual cuyo progreso se debe guardar.
+     */
+    public static void finDelJuego(User usuarioEscogido) {
+
+        // Al finalizar los juegos se guarda al usuario con sus nuevos datos.
+        try {
+            usuarioEscogido.guardarUsuario();
+        } catch (Exception e) {
+            System.out.println(e);
+        }                        
+        
+        // Se marca el fin de el juego.
+        System.out.println(guiones);
+
+        // Se le pregunta al usuario si quiere seguir explorando la feria o no.
+        System.out.println("¿Deseas seguir explorando la feria?");
+        System.out.println("(1) Sí              (0) No");
+
+        // Método que que asegura y verifica que la opción sea válida.
+        int opcion = VerificadorDeOpcionesInt.verificarOpcion(0,1);
+
+        // Caso de que se decida salir de programa.
+        if(opcion == 0) {
+            System.out.println(guiones);
+            finalizarPrograma();
+        }
+
+        // Se marca el fin de la sección.
+        System.out.println(guiones);
     }
 }

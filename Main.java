@@ -8,13 +8,14 @@
  * @version 2.2
  */
 import java.util.Scanner;
-import src.Verificador.*;
-import src.Usuarios.*;
-import src.TorresHanoi.*;
+import src.Conecta4.JuegoConecta_4;
+import src.CuadradoMagico.JugarCuadradoMagico;
+import src.Ordenamiento.*;
 import src.Salvado.*;
 import src.Salvado.SalvadoExcepciones.*;
-import src.Conecta4.JuegoConecta_4;
-import src.Ordenamiento.*;
+import src.TorresHanoi.*;
+import src.Usuarios.*;
+import src.Verificador.*;
 
 public class Main {
     // Variable que delimita el fin de una sección del menú.
@@ -87,7 +88,15 @@ public class Main {
 
                     // Caso de que el usuario haya escogido jugar "Cuadrado mágico".
                     case 1:
-                    System.out.println("Implementar el código que falta");
+                    try {
+                        usuarioEscogido.retirarSaldo(15);
+                        JugarCuadradoMagico juego = new JugarCuadradoMagico(usuarioEscogido);
+                        juego.jugar();
+
+                    // Caso de que no cuente con los fondos suficientes se le notifica y no se le da acceso al juego. 
+                    } catch (Exception e) {
+                        System.out.println("Lo siento no tienes saldo suficiente.");
+                    }
                         break;
                     
                     // Caso de que el usuario haya escogido jugar "Conecta 4".

@@ -9,7 +9,7 @@
  */
 import java.util.Scanner;
 import src.Conecta4.JuegoConecta_4;
-import src.CuadradoMagico.JugarCuadradoMagico;
+import src.CuadradoMagico.*;
 import src.Ordenamiento.*;
 import src.Salvado.*;
 import src.Salvado.SalvadoExcepciones.*;
@@ -88,6 +88,7 @@ public class Main {
 
                     // Caso de que el usuario haya escogido jugar "Cuadrado mágico".
                     case 1:
+                        //se intenta retirar el saldo de la cuenta del usuario.
                     try {
                         usuarioEscogido.retirarSaldo(15);
                         JugarCuadradoMagico juego = new JugarCuadradoMagico(usuarioEscogido);

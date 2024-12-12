@@ -34,7 +34,7 @@ java Main
 
 ### Explicación de la primera parte del programa
 
-#### `Cración y manejo de usuarios`
+### `Cración y manejo de usuarios`
 Se inicia el programa y lo primero que puedes ver es un menú que te da la bienvenida, esta primera sección del menú se encarga de la creación y manejo de sesiones, ejemplo de esta parte del menú:
 
 ```bash
@@ -86,7 +86,7 @@ Has escogido el usuario USUARIONUEVO
 
 ---
 
-#### `Selección de días`
+### `Selección de días`
 Esta parte es bastante simple una vez que hayas iniciado sesión, se te pedirá escoger un día, una vez escogido un día solo podrás jugar juegos de ese día sin posibilidad de
 moverte de día.
 
@@ -101,7 +101,7 @@ moverte de día.
 
 ### Explicación de los juegos del programa
 
-#### `Cuadrado Mágico`
+### `Cuadrado Mágico`
 **Clase `Tablero`**  
 - Con el cuadrado mágico resuelto, se crearon variantes de este para ofrecer mayor variedad de posibilidades de resolución.  
 
@@ -124,7 +124,7 @@ moverte de día.
 
 ---
 
-#### `Conecta 4`
+### `Conecta 4`
 Este juego consta de una simulación del juego de Conecta 4. Lo primero con lo que te encontraras es con un menú que te brindará las reglas a seguir y el objetivo a lograr, ejemplo:
 ```bash
 ------------------------------------------------------------------------------------------------------------------------
@@ -268,7 +268,7 @@ Y con la máquina sería exactamente lo mismo solo que al hacer una jugada la m�
 
 ---
 
-#### `Salvado`
+### `Salvado`
 **Clase `JugarSalvado`**  
 - Se inicializa un arreglo con 100 posiciones que representan personas sentadas en un círculo (del 1 al 100).  
 - Se elige un número \(n\) al azar entre 1 y 100, que define el intervalo de eliminación (de cuántos en cuántos se elimina).  

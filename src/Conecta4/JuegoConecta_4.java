@@ -5,8 +5,8 @@
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 10-12-2024
- * @version 1.2
+ * @date 11-12-2024
+ * @version 1.3
  */
 package src.Conecta4;
 
@@ -36,6 +36,15 @@ public class JuegoConecta_4 {
         for(int i = 0; i < 120; i++) {
             guiones.append("-");
         }
+
+        // Se muestran las instrucciones del juego.
+        System.out.println("INSTRUCCIONES:");
+        System.out.println("* El juego se juega en un tablero de 7 columnas y 6 filas.");
+        System.out.println("* Dos jugadores se turnan para dejar fichas en una de las columnas.");
+        System.out.println("* Las fichas caen al espacio disponible más bajo de la columna seleccionada.");
+        System.out.println("* El objetivo es conectar 4 fichas consecutivas en línea horizontal, vertical o diagonal.");
+        System.out.println("* Si el tablero se llena sin que nadie conecte 4 fichas, el juego termina en empate.");
+        System.out.println(guiones);
 
         // Se le da al usuario la opción de jugar solo o con alguien más.
         System.out.println("Por favor escoge si quieres jugar contra la máquina o en contra de otro jugador:");

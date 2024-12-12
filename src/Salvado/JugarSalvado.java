@@ -6,25 +6,33 @@
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
  * @date 27-11-2024
- * @version 1.0
+ * @version 1.2
  */
 package src.Salvado;
-import src.Salvado.SalvadoExcepciones.*;
 import java.util.Random;
+import java.util.Scanner;
+import src.Salvado.SalvadoExcepciones.*;
+import src.Usuarios.User;
 
 public class JugarSalvado{
     private int [] circulo;
     private int saltos;
     private Random numAlea;
+    private User usuario;
+    private Scanner teclado = new Scanner(System.in);
+    private int puntosGanados;
 
     /**
      * Constructor por omisión, que crea un arreglo que representa un circulo con 100 personas,
      * inicializa los saltos con un número aleatorio.
      * 
+     * @param usuario: el usuario que esta jugando.
     */
-    public JugarSalvado(){
+    public JugarSalvado(User usuario){
         this.circulo = new int[100];
         this.numAlea = new Random();
+        this.usuario = usuario;
+        this.puntosGanados = 0;
         iniciarJuego();
     }
 
@@ -97,6 +105,49 @@ public class JugarSalvado{
      */
     public int obtenerSaltos(){
         return saltos;
+    }
+
+    /**
+     * Método para interactuar con el usuario y permitirle jugar al juego de salvado.
+     * @throws EntradaInvalidaExcepcion si el usuario ingresa un valor que no es un número entero. 
+     * @throws EstadoInvalidoDelJuegoExcepcion si ocurre un error inesperado en el juego. 
+     * @throws IndexOutOfBoundsException si el índice está fuera del rango válido. 
+     * @throws Exception para manejar cualquier otra excepción no específica que pueda ocurrir.
+     */
+    public void jugarUser(){
+        System.out.println("INSTRUCCIONES: ");
+        System.out.println("En un circulo formado por sillas hay 100 personas.");
+        System.out.println("Dependiendo el número de saltos que de, se irán eliminando hasta que quede un ganador.");
+        System.out.println("Tu tarea es adivinar que posición quedará hasta el final.");
+        System.out.println("----------------------------------------------------------------------------------");
+        try {
+            System.out.println("El número de saltos de esta ronda es: " + obtenerSaltos());
+            System.out.println("Ingresa el número de jugador que crees que sobrevivirá hasta el final, solo números entre 1 y 100: ");
+
+            try{
+                int prediccion = teclado.nextInt();
+                int sobrevivio = jugar();
+                if (prediccion== sobrevivio) {
+                    System.out.println("¡Has Adivinado!. El jugador que sobrevivio hasta el final fue: " + sobrevivio);
+                    puntosGanados = 12;
+                } else{
+                    System.out.println("¡Has fallado!. El jugador que sobrevivio al final fue: " + sobrevivio);
+                    puntosGanados = 2;
+                }
+                usuario.sumarPuntos(puntosGanados);
+                System.out.println("\n¡¡HAS GANADO " + puntosGanados + " PUNTOS!!, se mostrara tu nueva información: ");
+            }catch(Exception e){
+                throw new EntradaInvalidaExcepcion("Solo puedes escribir números");
+            }
+        } catch (EstadoInvalidoDelJuegoExcepcion e) {
+            System.out.println(e.getMessage());
+            teclado.nextLine();
+        } catch (IndexOutOfBoundsException e){
+            System.out.println("El indice está fuera del rango válido");
+        } catch (Exception e){
+            System.out.println("Ocurrió un error");
+            teclado.nextLine();
+        } 
     }
 
 }

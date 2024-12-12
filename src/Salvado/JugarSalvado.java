@@ -10,16 +10,15 @@
  */
 package src.Salvado;
 import java.util.Random;
-import java.util.Scanner;
 import src.Salvado.SalvadoExcepciones.*;
 import src.Usuarios.*;
+import src.Verificador.VerificadorDeOpcionesInt;
 
 public class JugarSalvado{
     private int [] circulo;
     private int saltos;
     private Random numAlea;
     private User usuario;
-    private Scanner teclado = new Scanner(System.in);
     private int puntosGanados;
 
     /**
@@ -120,34 +119,27 @@ public class JugarSalvado{
         System.out.println("Dependiendo el número de saltos que de, se irán eliminando hasta que quede un ganador.");
         System.out.println("Tu tarea es adivinar que posición quedará hasta el final.");
         System.out.println("----------------------------------------------------------------------------------");
+
+        System.out.println("El número de saltos de esta ronda es: " + obtenerSaltos());
+        System.out.println("Ingresa el número de jugador que crees que sobrevivirá hasta el final, solo números entre 1 y 100: ");
+
+        // Método que se encarga de asegurar que la opción es válida y se encuentra en un rango del 1 al 100.
+        int prediccion = VerificadorDeOpcionesInt.verificarOpcion(1, 100);
         try {
-            System.out.println("El número de saltos de esta ronda es: " + obtenerSaltos());
-            System.out.println("Ingresa el número de jugador que crees que sobrevivirá hasta el final, solo números entre 1 y 100: ");
 
-            try{
-                int prediccion = teclado.nextInt();
-                int sobrevivio = jugar();
-                if (prediccion== sobrevivio) {
-                    System.out.println("¡Has Adivinado!. El jugador que sobrevivio hasta el final fue: " + sobrevivio);
-                    puntosGanados = 12;
-                } else{
-                    System.out.println("¡Has fallado!. El jugador que sobrevivio al final fue: " + sobrevivio);
-                    puntosGanados = 2;
-                }
-                usuario.sumarPuntos(puntosGanados);
-                System.out.println("\n¡¡HAS GANADO " + puntosGanados + " PUNTOS!!, se mostrara tu nueva información: ");
-            }catch(Exception e){
-                throw new EntradaInvalidaExcepcion("Solo puedes escribir números");
+            int sobrevivio = jugar();
+            if (prediccion == sobrevivio) {
+                System.out.println("¡Has Adivinado!. El jugador que sobrevivio hasta el final fue: " + sobrevivio);
+                puntosGanados = 12;
+            } else {
+                System.out.println("¡Has fallado!. El jugador que sobrevivio al final fue: " + sobrevivio);
+                puntosGanados = 2;
             }
-        } catch (EstadoInvalidoDelJuegoExcepcion e) {
-            System.out.println(e.getMessage());
-            teclado.nextLine();
-        } catch (IndexOutOfBoundsException e){
-            System.out.println("El indice está fuera del rango válido");
-        } catch (Exception e){
-            System.out.println("Ocurrió un error");
-            teclado.nextLine();
-        } 
-    }
+            usuario.sumarPuntos(puntosGanados);
+            System.out.println("\n¡¡HAS GANADO " + puntosGanados + " PUNTOS!!, se mostrara tu nueva información: ");
 
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

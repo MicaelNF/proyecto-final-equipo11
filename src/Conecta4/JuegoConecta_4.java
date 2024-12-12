@@ -37,6 +37,15 @@ public class JuegoConecta_4 {
             guiones.append("-");
         }
 
+        // Se muestran las instrucciones del juego.
+        System.out.println("INSTRUCCIONES:");
+        System.out.println("* El juego se juega en un tablero de 7 columnas y 6 filas.");
+        System.out.println("* Dos jugadores se turnan para dejar fichas en una de las columnas.");
+        System.out.println("* Las fichas caen al espacio disponible más bajo de la columna seleccionada.");
+        System.out.println("* El objetivo es conectar 4 fichas consecutivas en línea horizontal, vertical o diagonal.");
+        System.out.println("* Si el tablero se llena sin que nadie conecte 4 fichas, el juego termina en empate.");
+        System.out.println(guiones);
+
         // Se le da al usuario la opción de jugar solo o con alguien más.
         System.out.println("Por favor escoge si quieres jugar contra la máquina o en contra de otro jugador:");
         System.out.println("(1) Para jugar contra otro jugador        (2) Para poder jugar en contra de la máquina        (0) Salir del programa");

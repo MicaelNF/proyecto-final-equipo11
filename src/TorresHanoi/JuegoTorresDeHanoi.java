@@ -34,6 +34,13 @@ public class JuegoTorresDeHanoi {
         // Se inicializa una representación de este juego.
         TorresDeHanoi juegoTorreDeHanoi = new TorresDeHanoi();
 
+        // Se muestran las instrucciones del juego.
+        System.out.println("INSTRUCCIONES:");
+        System.out.println("* Solo puedes mover un disco a la vez.");
+        System.out.println("* Un disco solo puede colocarse sobre otro más grande o en un poste vacío.");
+        System.out.println("* El objetivo es mover todos los discos de la torre inicial a la torre torre del extremo derecho.");
+        System.out.println(guiones);
+
         // Empieza el bucle principal de este juego.
         while(continuar) {
             try {

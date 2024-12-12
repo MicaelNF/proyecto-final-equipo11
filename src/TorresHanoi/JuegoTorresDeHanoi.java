@@ -10,8 +10,8 @@
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 02-12-2024
- * @version 1.0
+ * @date 11-12-2024
+ * @version 1.1
  */
 package src.TorresHanoi;
 

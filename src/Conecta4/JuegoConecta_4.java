@@ -5,8 +5,8 @@
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 10-12-2024
- * @version 1.2
+ * @date 11-12-2024
+ * @version 1.3
  */
 package src.Conecta4;
 

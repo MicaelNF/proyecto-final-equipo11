@@ -4,7 +4,7 @@
  * 
  * @author Nolasco Flores Micael
  * @author Romualdo Valera Seyin Xuxek
- * @date 11-11-2024
+ * @date 11-12-2024
  * @version 1.0
  */
 package src.Salvado.SalvadoExcepciones;

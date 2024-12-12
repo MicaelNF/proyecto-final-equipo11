@@ -44,18 +44,15 @@ java Main
    * o si en una linea con espacios vacios ya no se puede conseguir la constante, se detiene el juego y el usuario pierde.
    * De lo contrario el juego sigue hasta completar el cuadrado mágico (si se completa quiere decir que es cuadrado magico ya que siempre se detendrá si ya no se cumple la suma en alguna linea).
    * Se evalua al final si se cumple la constante magica en cada linea y si es asi, el jugador gana. 
-3. **Conecta 4**
-   *
-5. **Salvado:**
-   ### Clase JugarSalvado
-   *Se inicializa un arreglo de 100 espacios con números del 1 al 100 (simulando a 100 personas sentadas cada una en una silla).
-   *Se escoge un número n al azar del 1 al 100, lo cuál definira los saltos (de cuanto en cuanto va eliminando a las personas).
-   *Conforme va avanzando el juego, el sistema va eliminando a las personas que caigan en la posición n (sin contar a las que ya hayan sido eliminadas).
+2. **Conecta 4:**
+3. **Salvado:**
+   ### Clase JugarSalvado:
+   * Se inicializa un arreglo de 100 espacios con números del 1 al 100 (simulando a 100 personas sentadas cada una en una silla).
+   * Se escoge un número n al azar del 1 al 100, lo cuál definira los saltos (de cuanto en cuanto va eliminando a las personas).
+   * Conforme va avanzando el juego, el sistema va eliminando a las personas que caigan en la posición n (sin contar a las que ya hayan sido eliminadas).
    * El jugador deberá adivinar en que posición del 1 al 100 esta la persona que sobrevivió al final, y si no le atinó pierde.
-7. **Torres de Hanoi**
-   *
+4. **Torres de Hanoi:**
 
-   
 ## Comentarios
 1. Puedes utilizar todo lo revisado hasta el momento.
 2. Es importante que comentes tú código en formato javadoc.

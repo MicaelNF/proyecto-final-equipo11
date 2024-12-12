@@ -7,7 +7,7 @@
  * @date 8-12-2024
  * @version 1.0
  */
-package  src.CuadroMagico.CuadradoMagicoExcepciones;
+package  src.CuadradoMagico.CuadradoMagicoExcepciones;
 
 public class NumeroRepetidoExcepcion extends Exception {
 

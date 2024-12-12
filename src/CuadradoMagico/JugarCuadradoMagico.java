@@ -11,7 +11,7 @@
 package src.CuadradoMagico;
 import java.util.Random;
 import java.util.Scanner;
-import src.CuadroMagico.CuadradoMagicoExcepciones.*;
+import src.CuadradoMagico.CuadradoMagicoExcepciones.*;
 import src.Usuarios.*;
 
 
@@ -57,7 +57,7 @@ public class JugarCuadradoMagico{
      *  Método principal del juego. Controla la lógica de interacción con el usuario
      * y la validación de los movimientos realizados en el cuadrado mágico.
      */
-    public void jugar(){
+    public void jugar() throws Exception{
         // Obtiene una variante aleatoria del cuadrado mágico.
         int[][] cuadradoMagico = tab.posiblesCuadradosMagicos();
 

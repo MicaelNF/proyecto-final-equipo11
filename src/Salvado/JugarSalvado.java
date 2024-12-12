@@ -12,7 +12,7 @@ package src.Salvado;
 import java.util.Random;
 import java.util.Scanner;
 import src.Salvado.SalvadoExcepciones.*;
-import src.Usuarios.User;
+import src.Usuarios.*;
 
 public class JugarSalvado{
     private int [] circulo;
@@ -58,7 +58,7 @@ public class JugarSalvado{
      * @throws EstadoInvalidoDelJuegoExcepcion si ocurre un error inesperado en el juego.
      * 
      */
-    public int jugar(){
+    public int jugar() throws Exception{
         //Participantes restantes
         int sobrevivientes = circulo.length;
         int indiceActual = 0;
@@ -114,7 +114,7 @@ public class JugarSalvado{
      * @throws IndexOutOfBoundsException si el índice está fuera del rango válido. 
      * @throws Exception para manejar cualquier otra excepción no específica que pueda ocurrir.
      */
-    public void jugarUser(){
+    public void jugarUser() throws Exception{
         System.out.println("INSTRUCCIONES: ");
         System.out.println("En un circulo formado por sillas hay 100 personas.");
         System.out.println("Dependiendo el número de saltos que de, se irán eliminando hasta que quede un ganador.");

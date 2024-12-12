@@ -31,13 +31,13 @@ java Main
 ```
 3. **Seguir las instrucciones del programa.**
 
-###Explicación juegos
-1. **Cuadrado Mágico**
-   ***Clase Tablero**
+## Explicación juegos
+1. **Cuadrado Mágico:**
+   ### Clase Tablero:
    * Con el cuadrado mágico resuelto, se crearon variantes de éste para mayor variedad de posibilidades de resolución.
-   ***Clase CuadradoMagico**
+   ### Clase CuadradoMagico:
    * Se crearon metodos para controlar que los números no se repitan,evaluar la suma en cada linea,si se puede continuar jugando, si es cuadrado mágico, y para imprimir el tablero para jugar.
-   ***Clase JugarCuadradoMagico**
+   ### Clase JugarCuadradoMagico:
    * Se elige al azar una de las variantes o la original y también se elige de forma aleatoria la linea que se mostrará para comenzar el juego.
    * Cada que el jugador teclea un número en una coordenada especifica se evalua si se puede seguir jugando.
    * Si en una linea completa no se cumple la constante magica (es decir 34),
@@ -46,8 +46,8 @@ java Main
    * Se evalua al final si se cumple la constante magica en cada linea y si es asi, el jugador gana. 
 3. **Conecta 4**
    *
-5. **Salvado**
-   ***Clase JugarSalvado**
+5. **Salvado:**
+   ### Clase JugarSalvado
    *Se inicializa un arreglo de 100 espacios con números del 1 al 100 (simulando a 100 personas sentadas cada una en una silla).
    *Se escoge un número n al azar del 1 al 100, lo cuál definira los saltos (de cuanto en cuanto va eliminando a las personas).
    *Conforme va avanzando el juego, el sistema va eliminando a las personas que caigan en la posición n (sin contar a las que ya hayan sido eliminadas).
